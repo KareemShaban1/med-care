@@ -1,0 +1,35 @@
+body {
+    direction: rtl;
+}
+
+
+/* Flip margin utilities */
+html[dir="rtl"] .me-2 { margin-left: .5rem !important; margin-right: 0 !important; }
+html[dir="rtl"] .ms-rtl-2 { margin-right: .5rem !important; margin-left: 0 !important; }
+
+/* Navbar alignment */
+html[dir="rtl"] .ms-auto { margin-left: 0 !important; margin-right: auto !important; }
+html[dir="rtl"] .me-auto-rtl { margin-right: 0 !important; margin-left: auto !important; }
+
+/* Dropdown direction */
+html[dir="rtl"] .dropdown-menu-end.dropdown-menu-dir {
+    right: auto !important;
+    left: 0 !important;
+    text-align: right;
+}
+
+/* Badge (cart counter) fix */
+.cart-badge {
+    top: 5px !important;
+}
+html[dir="rtl"] .cart-badge { right: 8px !important; left: auto !important; }
+
+.cart-menu {
+    min-width: 300px; 
+    right: -270px !important;
+    direction: ltr !important;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}

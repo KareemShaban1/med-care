@@ -1,0 +1,22 @@
+
+
+html[dir="ltr"] .dropdown-menu-end.dropdown-menu-dir {
+    right: 0 !important;
+    left: auto !important;
+    text-align: left;
+}
+
+/* Badge (cart counter) fix */
+.cart-badge {
+    top: 5px !important;
+}
+html[dir="ltr"] .cart-badge { left: 30px !important; right: auto !important; }
+
+.cart-menu {
+    min-width: 300px; 
+    left: -240px;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
