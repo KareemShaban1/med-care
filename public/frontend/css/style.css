@@ -12,10 +12,6 @@ html[dir="ltr"] .dropdown-menu-end.dropdown-menu-dir {
 }
 html[dir="ltr"] .cart-badge { left: 30px !important; right: auto !important; }
 
-.cart-menu {
-    min-width: 370px; 
-    left: -240px;
-}
 
 .dropdown-toggle::after {
     display: none !important;

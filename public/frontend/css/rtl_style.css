@@ -42,11 +42,6 @@ html[dir="rtl"] .dropdown-menu-end.dropdown-menu-dir {
 }
 html[dir="rtl"] .cart-badge { right: 8px !important; left: auto !important; }
 
-.cart-menu {
-    min-width: 370px; 
-    right: -270px !important;
-    direction: ltr !important;
-}
 
 .dropdown-toggle::after {
     display: none !important;
