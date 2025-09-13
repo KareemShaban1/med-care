@@ -94,29 +94,52 @@
 
 </div>
 
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            @foreach($banners->where('type','image')->take(2) as $banner)
+            <div class="col-md-6 mb-3">
+                <div class="position-relative">
+                    <img src="{{ $banner->image_url }}" alt="Banner" class="w-100 rounded" style="height: 300px; object-fit: cover;">
+
+                    <!-- Overlay Content -->
+                    <div class="position-absolute top-50 start-50 translate-middle text-center text-white p-3" style="background: rgba(0,0,0,0.4); border-radius: 8px;">
+                        <h3 class="fw-bold">{{ $banner->title }}</h3>
+                        <p class="mb-3">{{ $banner->description ?? 'banner description goes here.' }}</p>
+                        <a href="{{ $banner->url }}" class="btn btn-primary">
+                            {{ __('Shop Now') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 <!-- Service Features -->
 <section class="py-5 bg-light">
     <div class="container">
         <div class="row g-4">
             <div class="col-md-3 text-center">
                 <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
-                <h5>{{ __('Free Shipping') }}</h5>
-                <p class="text-muted">{{ __('On orders over $99') }}</p>
+                <h3 class="text-black text-lg">{{ __('Free Shipping') }}</h3>
+                <p class="text-gray-600">{{ __('On orders over $99') }}</p>
             </div>
             <div class="col-md-3 text-center">
                 <i class="fas fa-undo fa-3x text-success mb-3"></i>
-                <h5>{{ __('Easy Returns') }}</h5>
-                <p class="text-muted">{{ __('30-day return policy') }}</p>
+                <h3 class="text-black text-lg">{{ __('Easy Returns') }}</h3>
+                <p class="text-gray-600">{{ __('30-day return policy') }}</p>
             </div>
             <div class="col-md-3 text-center">
                 <i class="fas fa-headset fa-3x text-warning mb-3"></i>
-                <h5>{{ __('24/7 Support') }}</h5>
-                <p class="text-muted">{{ __('Customer service') }}</p>
+                <h3 class="text-black text-lg">{{ __('24/7 Support') }}</h3>
+                <p class="text-gray-600">{{ __('Customer service') }}</p>
             </div>
             <div class="col-md-3 text-center">
                 <i class="fas fa-shield-alt fa-3x text-info mb-3"></i>
-                <h5>{{ __('Secure Payment') }}</h5>
-                <p class="text-muted">{{ __('100% secure checkout') }}</p>
+                <h3 class="text-black text-lg">{{ __('Secure Payment') }}</h3>
+                <p class="text-gray-600">{{ __('100% secure checkout') }}</p>
             </div>
         </div>
     </div>

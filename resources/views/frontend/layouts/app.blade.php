@@ -18,78 +18,8 @@
     <link href="{{ asset('frontend/css/rtl_style.css') }}" rel="stylesheet">
     @endif
 
-    <style>
-        /* small responsive tweaks */
-        .swiper-slide img {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
-
-        .mySwiper {
-            width: 100%;
-            height: 350px;
-            /* adjust height */
-        }
-
-        .mySwiper .swiper-wrapper {
-            display: flex;
-        }
-
-        .mySwiper .swiper-slide {
-            flex-shrink: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        .mySwiper .swiper-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .swiper-pagination {
-            position: absolute;
-            top: 20px;
-        }
-
-        header {
-            background-color: #f5f5f5;
-        }
-
-        footer {
-            background-color: #f5f5f5;
-            color: #fff;
-            padding: 3rem 0;
-        }
-
-        .social-icons a {
-            font-size: 1.25rem;
-        }
-
-        #mobileMenu {
-            display: none;
-            background-color: #f8f9fa;
-            padding: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            #mobileMenu {
-                display: none !important;
-            }
-        }
-
-        .nav-link {
-            padding: 0.5rem 1rem;
-        }
-
-        @media (min-width: 768px) {
-            main {
-                margin-left: 175px;
-                margin-right: 175px;
-            }
-        }
-    </style>
+    <!-- Global CSS -->
+    <link href="{{ asset('frontend/css/global.css') }}" rel="stylesheet">
 
     @stack('styles')
 </head>
@@ -110,28 +40,28 @@
 
     <!-- Toast container -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
-    @if(session('toast_success'))
-    <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                {{ session('toast_success') }}
+        @if(session('toast_success'))
+        <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ session('toast_success') }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-    </div>
-    @endif
+        @endif
 
-    @if(session('toast_error'))
-    <div id="toastError" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                {{ session('toast_error') }}
+        @if(session('toast_error'))
+        <div id="toastError" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ session('toast_error') }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
+        @endif
     </div>
-    @endif
-</div>
 
 
     @stack('scripts')

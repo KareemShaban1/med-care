@@ -51,8 +51,13 @@
                     <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none text-gray-800">
                         <h6 class="font-semibold text-gray-800 truncate text-lg">{{ $product->name }}</h6>
                     </a>
-                    <p class="text-sm text-gray-500">{{ __('Category') }}:
+                    <p class="text-sm text-gray-500">
+                        <span class="font-semibold text-gray-800">{{ __('Category') }}</span>:
                         <span class="badge bg-primary text-white">{{ $product->category->name }}</span>
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        <span class="font-semibold text-gray-800">{{ __('Stock') }}</span>:
+                        <span class="badge bg-primary text-white">{{ $product->stock }}</span>
                     </p>
 
                     {{-- Prices --}}

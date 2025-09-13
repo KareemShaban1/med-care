@@ -1,19 +1,21 @@
-<header class="shadow-sm py-2 d-flex align-items-center" style="height: 80px;">
+<header class="shadow-sm py-2 d-flex align-items-center bg-gray-200" style="height: 80px;">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center">
 
             <div>
                 <a class="navbar-brand text-lg d-flex align-items-center gap-2" href="{{ route('home') }}">
-                    <i class="fa-solid fa-hospital text-primary"></i>
-                    MediStore
+                    <h5 class="fw-bold text-lg d-flex align-items-center gap-2">
+                        <img src="{{ asset('frontend/images/logo.png') }}" alt="Logo">
+                        MediStore
+                    </h5>
                 </a>
             </div>
             <!-- Desktop Navigation -->
             <nav class="d-none d-md-flex gap-3">
-                <a href="{{ route('home') }}" class="nav-link text-dark">{{ __('Home') }}</a>
-                <a href="{{ route('all-products') }}" class="nav-link text-dark">{{ __('Products')}}</a>
-                <a href="{{ route('policy') }}" class="nav-link text-dark">{{ __('Privacy & Policy')}}</a>
-                <a href="{{ route('contact') }}" class="nav-link text-dark">{{ __('Contact')}}</a>
+                <a href="{{ route('home') }}" class="nav-link text-dark text-lg">{{ __('Home') }}</a>
+                <a href="{{ route('all-products') }}" class="nav-link text-dark text-lg">{{ __('Products')}}</a>
+                <a href="{{ route('policy') }}" class="nav-link text-dark text-lg">{{ __('Privacy & Policy')}}</a>
+                <a href="{{ route('contact') }}" class="nav-link text-dark text-lg">{{ __('Contact')}}</a>
             </nav>
 
             <!-- Right Section -->
@@ -44,8 +46,13 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle position-relative" href="#" id="cartDropdown" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fa-solid fa-cart-shopping"></i>
-                                <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle cart-badge">
+                                <!-- <i class="fa-solid fa-cart-shopping"></i> -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-bag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z"></path>
+                                    <path d="M9 11v-5a3 3 0 0 1 6 0v5"></path>
+                                </svg>
+                                <span class="badge bg-green-600 rounded-pill position-absolute top-0 start-100 translate-middle cart-badge">
                                     {{ count(session('cart', [])) }}
                                 </span>
                             </a>
@@ -97,9 +104,7 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobileMenu" class="d-md-none mt-2" style="position: absolute;
-    z-index: 10;
-    width: 100%;">
+        <div id="mobileMenu" class="d-md-none mt-2" style="position: absolute;z-index: 10;width: 95%;left: 2.5%;">
             <nav class="mb-2 d-flex flex-column align-items-center">
                 <a href="{{ route('home') }}" class="nav-link text-dark">{{ __('Home') }}</a>
                 <a href="{{ route('all-products') }}" class="nav-link text-dark">{{ __('Products') }}</a>
@@ -133,7 +138,7 @@
                         <a class="nav-link dropdown-toggle position-relative" href="#" id="cartDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle cart-badge">
+                            <span class="badge bg-green-600 rounded-pill position-absolute top-0 start-100 translate-middle cart-badge">
                                 {{ count(session('cart', [])) }}
                             </span>
                         </a>

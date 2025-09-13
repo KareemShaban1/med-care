@@ -38,9 +38,9 @@ html[dir="rtl"] .dropdown-menu-end.dropdown-menu-dir {
 
 /* Badge (cart counter) fix */
 .cart-badge {
-    top: 5px !important;
+    top: 12px !important;
 }
-html[dir="rtl"] .cart-badge { right: 8px !important; left: auto !important; }
+html[dir="rtl"] .cart-badge { right: 20px !important; left: auto !important; }
 
 
 .dropdown-toggle::after {
