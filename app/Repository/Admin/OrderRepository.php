@@ -22,20 +22,27 @@ class OrderRepository implements OrderRepositoryInterface
             ->editColumn('status', function ($item) {
                 $statuses = ['pending', 'processing', 'completed', 'cancelled'];
                 $statusClass = match ($item->status) {
-                    'pending' => 'bg-warning',
+                    'pending'    => 'bg-warning',
                     'processing' => 'bg-info',
-                    'completed' => 'bg-success',
-                    'cancelled' => 'bg-danger',
+                    'completed'  => 'bg-success',
+                    'cancelled'  => 'bg-danger',
                 };
+
+                // Badge with translation
+                $badge = "<span class='badge $statusClass'>" . __($item->status) . "</span>";
+
+                // Dropdown with translation
                 $options = '';
                 foreach ($statuses as $status) {
                     $selected = $item->status === $status ? 'selected' : '';
-                    $options .= "<option value='$status' $selected>$status</option>";
+                    $options .= "<option value='{$status}' {$selected}>" . __($status) . "</option>";
                 }
-                return "
-                <span class='badge $statusClass'>{$item->status}</span>
-                <select class='form-select form-select-sm change-status' data-id='$item->id'>$options</select>";
+
+                $select = "<select class='form-select form-select-sm change-status' data-id='{$item->id}'>$options</select>";
+
+                return $badge . ' ' . $select;
             })
+
             ->addColumn('action', function ($item) {
                 return view('backend.pages.orders.partials.actions', compact('item'))->render();
             })
@@ -52,7 +59,7 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $order = Order::create($request->validated());
 
-        return redirect()->route('admin.orders.index')->with('success', 'Order created successfully');
+        return redirect()->route('admin.orders.index')->with('toast_success', __('Order created successfully'));
     }
 
     public function show($order)
@@ -85,35 +92,36 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function update($request, $order)
     {
-      try {
-        // Update order main info
-        $order->update([
-            'customer_name'    => $request->customer_name,
-            'customer_phone'   => $request->customer_phone,
-            'delivery_address' => $request->delivery_address,
-            'total'            => $request->total, // recalculated on frontend JS
-        ]);
-    
-        // Handle items
-        if ($request->has('items')) {
-            foreach ($request->items as $itemId => $data) {
-                $orderItem = $order->orderItems()->find($itemId);
-                if ($orderItem) {
-                    $orderItem->update([
-                        'unit_price' => $data['price'],
-                        'quantity'   => $data['quantity'],
-                        'subtotal'   => $data['price'] * $data['quantity'],
-                    ]);
+        try {
+            // Update order main info
+            $order->update([
+                'customer_name'    => $request->customer_name,
+                'customer_phone'   => $request->customer_phone,
+                'delivery_address' => $request->delivery_address,
+                'total'            => $request->total, // recalculated on frontend JS
+            ]);
+
+            // Handle items
+            if ($request->has('items')) {
+                foreach ($request->items as $itemId => $data) {
+                    $orderItem = $order->orderItems()->find($itemId);
+                    if ($orderItem) {
+                        $orderItem->update([
+                            'unit_price' => $data['price'],
+                            'quantity'   => $data['quantity'],
+                            'subtotal'   => $data['price'] * $data['quantity'],
+                        ]);
+                    }
                 }
             }
+
+            return redirect()->route('admin.orders.index')
+                ->with('toast_success', __('Order updated successfully'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with('toast_error', __('Failed to update order: ') . $e->getMessage());
         }
-    
-        return redirect()->route('admin.orders.index')->with('toast_success', 'Order updated successfully');
-      } catch (\Exception $e) {
-        return redirect()->back()->with('toast_error', 'Failed to update order: ' . $e->getMessage());
-      }
     }
-    
+
 
     public function destroy($order)
     {
@@ -129,6 +137,10 @@ class OrderRepository implements OrderRepositoryInterface
 
         $order->update(['status' => $request->status]);
 
-        return response()->json(['success' => true, 'status' => $request->status, 'toast_success' => 'Order status updated successfully']);
-    }   
+        return response()->json([
+            'success' => true,
+            'status' => $request->status,
+            'toast_success' => __('Order status updated successfully')
+        ]);
+    }
 }
