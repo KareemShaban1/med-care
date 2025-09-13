@@ -35,8 +35,10 @@ Route::group([
     ]
 ], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/product/{id}', [HomeController::class, 'showProduct'])->name('product.show');
+    Route::get('/product/{slug}', [HomeController::class, 'showProduct'])->name('product.show');
     Route::get('/all-products', [HomeController::class, 'allProducts'])->name('all-products');
+    Route::get('/policy', [HomeController::class, 'policy'])->name('policy');
+    Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
@@ -70,7 +72,7 @@ Route::group([
     Route::delete('banners/{id}/force-delete', [AdminBanner::class, 'forceDelete'])->name('banners.forceDelete');
     Route::resource('banners', AdminBanner::class);
 
-  
+
     Route::get('categories/data', [AdminCategory::class, 'data'])->name('categories.data');
     Route::post('categories/update-status', [AdminCategory::class, 'updateStatus'])->name('categories.update-status');
     Route::get('categories/trash', [AdminCategory::class, 'trash'])->name('categories.trash');

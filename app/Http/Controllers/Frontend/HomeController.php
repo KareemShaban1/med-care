@@ -35,7 +35,6 @@ class HomeController extends Controller
 
         if ($request->ajax()) {
 
-            // Return only the product grid (no layout)
             return view('frontend.pages.partials.products', compact('products', 'categories'))->render();
         }
 
@@ -50,9 +49,9 @@ class HomeController extends Controller
     }
 
 
-    public function showProduct($id)
+    public function showProduct($slug)
     {
-        $product = Product::with('category')->findOrFail($id);
+        $product = Product::with('category')->where('slug', $slug)->first();
         return view('frontend.pages.product_show', compact('product'));
     }
 
@@ -80,10 +79,20 @@ class HomeController extends Controller
 
         if ($request->ajax()) {
 
-            // Return only the product grid (no layout)
             return view('frontend.pages.partials.products', compact('products', 'categories'))->render();
         }
 
         return view('frontend.pages.all_products', compact('products', 'categories'));
+    }
+
+    public function policy()
+    {
+
+        return view('frontend.pages.policy');
+    }
+
+    public function contact()
+    {
+        return view('frontend.pages.contact');
     }
 }
