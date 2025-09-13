@@ -1,5 +1,23 @@
+@font-face {
+    font-family: "Almarai";
+    src: url(../fonts/Almarai-Regular.ttf);
+    src: url(../fonts/Almarai-Bold.ttf);
+    src: url(../fonts/Almarai-Regular.ttf);
+    src: url(../fonts/Almarai-Regular.ttf);
+
+}
+
 body {
     direction: rtl;
+    margin: 0;
+    font-family: 'Almarai';
+    font-size: .9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #6c757d;
+    background-color: #fafbfe;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent
 }
 
 
@@ -25,7 +43,7 @@ html[dir="rtl"] .dropdown-menu-end.dropdown-menu-dir {
 html[dir="rtl"] .cart-badge { right: 8px !important; left: auto !important; }
 
 .cart-menu {
-    min-width: 300px; 
+    min-width: 370px; 
     right: -270px !important;
     direction: ltr !important;
 }

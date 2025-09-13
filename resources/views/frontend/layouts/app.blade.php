@@ -45,11 +45,20 @@
         .mySwiper .swiper-slide img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
+        }
+
+        .swiper-pagination {
+            position: absolute;
+            top: 20px;
+        }
+
+        header {
+            background-color: #f5f5f5;
         }
 
         footer {
-            background-color: #343a40;
+            background-color: #f5f5f5;
             color: #fff;
             padding: 3rem 0;
         }
@@ -73,6 +82,13 @@
         .nav-link {
             padding: 0.5rem 1rem;
         }
+
+        @media (min-width: 768px) {
+            main {
+                margin-left: 175px;
+                margin-right: 175px;
+            }
+        }
     </style>
 
     @stack('styles')
@@ -80,9 +96,9 @@
 
 <body>
 
-    @include('frontend.layouts.topbar')
+    @include('frontend.layouts.header')
 
-    <main class="py-4">
+    <main class="py-4 md:mx-[150px] lg:mx-[150px]">
         <div class="container">
             @yield('content')
         </div>
@@ -92,32 +108,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="//unpkg.com/alpinejs" defer></script>
-
     <!-- Toast container -->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-        @if(session('toast_success'))
-        <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    {{ session('toast_success') }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
+    @if(session('toast_success'))
+    <div id="toastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ session('toast_success') }}
             </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        @endif
-
-        @if(session('toast_error'))
-        <div id="toastError" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    {{ session('toast_error') }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-        @endif
     </div>
+    @endif
+
+    @if(session('toast_error'))
+    <div id="toastError" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                {{ session('toast_error') }}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    @endif
+</div>
+
 
     @stack('scripts')
 

@@ -10,13 +10,13 @@
                     <table id="orders-table" class="table dt-responsive nowrap w-100">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Customer Name</th>
-                                <th>Customer Phone</th>
-                                <th>Delivery Address</th>
-                                <th>Status</th>
-                                <th>Total</th>
-                                <th>Actions</th>
+                                <th>{{ __('ID') }}</th>
+                                <th>{{ __('Customer Name') }}</th>
+                                <th>{{ __('Customer Phone') }}</th>
+                                <th>{{ __('Delivery Address') }}</th>
+                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Total') }}</th>
+                                <th>{{ __('Actions') }}</th>
                             </tr>
                         </thead>
                     </table>
@@ -31,24 +31,24 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Order Details</h5>
+                <h5 class="modal-title">{{ __('Order Details') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Customer:</strong> <span id="modalCustomer"></span></p>
-                <p><strong>Phone:</strong> <span id="modalPhone"></span></p>
-                <p><strong>Address:</strong> <span id="modalAddress"></span></p>
-                <p><strong>Status:</strong> <span id="modalStatus"></span></p>
-                <p><strong>Total:</strong> <span id="modalTotal"></span></p>
+                <p><strong>{{ __('Customer Name') }}:</strong> <span id="modalCustomer"></span></p>
+                <p><strong>{{ __('Customer Phone') }}:</strong> <span id="modalPhone"></span></p>
+                <p><strong>{{ __('Delivery Address') }}:</strong> <span id="modalAddress"></span></p>
+                <p><strong>{{ __('Status') }}:</strong> <span id="modalStatus"></span></p>
+                <p><strong>{{ __('Total') }}:</strong> <span id="modalTotal"></span></p>
 
-                <h6>Items</h6>
-                <table class="table table-sm">
+                <h6>{{ __('Items') }}</h6>
+                <table class="table table-sm table-bordered mt-4">
                     <thead>
                         <tr>
-                            <th>Product</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>Subtotal</th>
+                            <th>{{ __('Product Name') }}</th>
+                            <th>{{ __('Quantity') }}</th>
+                            <th>{{ __('Price') }}</th>
+                            <th>{{ __('Total') }}</th>
                         </tr>
                     </thead>
                     <tbody id="modalItems"></tbody>
@@ -171,7 +171,17 @@
             $('#modalCustomer').text(order.customer_name);
             $('#modalPhone').text(order.customer_phone);
             $('#modalAddress').text(order.delivery_address);
-            $('#modalStatus').text(order.status);
+            let status = order.status;
+            if (status == 'pending') {
+                $('#modalStatus').html("<span class='badge bg-warning'>{{ __('Pending') }}</span>");
+            } else if (status == 'processing') {
+                $('#modalStatus').html("<span class='badge bg-info'>{{ __('Processing') }}</span>");
+            } else if (status == 'completed') {
+                $('#modalStatus').html("<span class='badge bg-success'>{{ __('Completed') }}</span>");
+            } else if (status == 'cancelled') {
+                $('#modalStatus').html("<span class='badge bg-danger'>{{ __('Cancelled') }}</span>");
+            }
+            
             $('#modalTotal').text(order.total);
 
             let rows = '';

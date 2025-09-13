@@ -1,8 +1,8 @@
 @extends('backend.layouts.app')
 
 @section('content')
-<div class="container">
-    <h2>Edit Order #{{ $order->id }}</h2>
+<div class="container card mt-3 mx-3">
+    <h2>{{ __('Edit Order') }} #{{ $order->id }}</h2>
 
     <form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
         @csrf
@@ -10,31 +10,31 @@
         
         {{-- Customer Info --}}
         <div class="mb-3">
-            <label class="form-label">Customer Name</label>
+            <label class="form-label">{{ __('Customer Name') }}</label>
             <input type="text" class="form-control" name="customer_name" value="{{ old('customer_name', $order->customer_name) }}" required>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Customer Phone</label>
+            <label class="form-label">{{ __('Customer Phone') }}</label>
             <input type="text" class="form-control" name="customer_phone" value="{{ old('customer_phone', $order->customer_phone) }}">
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Delivery Address</label>
+            <label class="form-label">{{ __('Delivery Address') }}</label>
             <input type="text" class="form-control" name="delivery_address" value="{{ old('delivery_address', $order->delivery_address) }}">
         </div>
 
         <hr>
 
         {{-- Order Products --}}
-        <h4>Products in this Order</h4>
+        <h4>{{ __('Products in this Order') }}</h4>
         <table class="table table-bordered align-middle" id="order-items-table">
             <thead>
                 <tr>
-                    <th>Product</th>
-                    <th width="120">Price</th>
-                    <th width="120">Quantity</th>
-                    <th width="120">Subtotal</th>
+                    <th>{{ __('Product') }}</th>
+                    <th width="120">{{ __('Price') }}</th>
+                    <th width="120">{{ __('Quantity') }}</th>
+                    <th width="120">{{ __('Subtotal') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,13 +62,13 @@
 
         {{-- Order Total --}}
         <div class="mb-3">
-            <label class="form-label">Order Total</label>
+            <label class="form-label">{{ __('Order Total') }}</label>
             <input type="number" step="0.01" class="form-control" id="order-total" name="total" 
                    value="{{ old('total', $order->total) }}" required readonly>
         </div>
 
-        <button type="submit" class="btn btn-primary">Update Order</button>
-        <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">{{ __('Update Order') }}</button>
+        <a href="{{ route('admin.orders.index') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
     </form>
 </div>
 @endsection

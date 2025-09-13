@@ -10,10 +10,10 @@
             </div>
             <!-- Desktop Navigation -->
             <nav class="d-none d-md-flex gap-3">
-                <a href="{{ route('home') }}" class="nav-link text-dark">Home</a>
-                <a href="{{ route('all-products') }}" class="nav-link text-dark">Products</a>
-                <a href="{{ route('policy') }}" class="nav-link text-dark">Privacy & Policy</a>
-                <a href="{{ route('contact') }}" class="nav-link text-dark">Contact</a>
+                <a href="{{ route('home') }}" class="nav-link text-dark">{{ __('Home') }}</a>
+                <a href="{{ route('all-products') }}" class="nav-link text-dark">{{ __('Products')}}</a>
+                <a href="{{ route('policy') }}" class="nav-link text-dark">{{ __('Privacy & Policy')}}</a>
+                <a href="{{ route('contact') }}" class="nav-link text-dark">{{ __('Contact')}}</a>
             </nav>
 
             <!-- Right Section -->

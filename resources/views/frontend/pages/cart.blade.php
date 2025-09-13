@@ -2,8 +2,9 @@
 @section('content')
 <div class="container mx-auto py-8">
   
-  <h3 class="text-2xl font-bold mb-6">🛒 Your Cart</h3>
+  <h3 class="text-2xl font-bold mb-6">🛒 {{ __('Your Cart') }}</h3>
 
+  <!-- check cart has products -->
   @if(count($cart))
     {{-- Update Cart Form --}}
     <form method="POST" action="{{ route('cart.update') }}" id="updateCartForm">
@@ -12,10 +13,10 @@
         <table class="min-w-full divide-y divide-gray-200 bg-white" id="cartTable">
           <thead class="bg-gray-100">
             <tr>
-              <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">Product</th>
-              <th class="px-4 py-3 text-sm font-semibold text-gray-600">Price</th>
-              <th class="px-4 py-3 text-sm font-semibold text-gray-600">Quantity</th>
-              <th class="px-4 py-3 text-sm font-semibold text-gray-600">Subtotal</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-gray-600">{{ __('Product') }}</th>
+              <th class="px-4 py-3 text-sm font-semibold text-gray-600">{{ __('Price') }}</th>
+              <th class="px-4 py-3 text-sm font-semibold text-gray-600">{{ __('Quantity') }}</th>
+              <th class="px-4 py-3 text-sm font-semibold text-gray-600">{{ __('Subtotal') }}</th>
               <th></th>
             </tr>
           </thead>
@@ -27,10 +28,10 @@
                        class="w-16 h-16 object-cover rounded-md shadow">
                   <div>
                     <p class="font-semibold text-gray-800">{{ $item['name'] }}</p>
-                    <p class="text-xs text-gray-500">ID: {{ $item['id'] }}</p>
+                    <p class="text-xs text-gray-500">{{ __('ID') }}: {{ $item['id'] }}</p>
                   </div>
                 </td>
-                <td class="px-4 py-3 price">EGP {{ number_format($item['price'],2) }}</td>
+                <td class="px-4 py-3 price">{{ __('EGP') }} {{ number_format($item['price'],2) }}</td>
                 <td class="px-4 py-3">
                   <input type="number" name="quantity[{{ $id }}]" 
                          value="{{ $item['quantity'] }}" min="0"
@@ -54,19 +55,19 @@
 
       <div class="flex flex-col md:flex-row justify-between items-center mt-6">
         <a href="{{ route('home') }}" 
-           class="text-blue-600 hover:underline mb-3 md:mb-0">← Continue shopping</a>
+           class="text-blue-600 hover:underline mb-3 md:mb-0">← {{ __('Continue shopping') }}</a>
         
         <div class="flex items-center gap-4">
-          <strong class="text-lg">Total: 
-            <span class="text-green-600">EGP <span id="cartTotal">{{ number_format($total,2) }}</span></span>
+          <strong class="text-lg">{{ __('Total') }}: 
+            <span class="text-green-600">{{ __('EGP') }} <span id="cartTotal">{{ number_format($total,2) }}</span></span>
           </strong>
           <button type="submit"
             class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-            Update Cart
+            {{ __('Update Cart') }}
           </button>
           <a href="{{ route('checkout.show') }}" 
              class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition">
-            Checkout
+            {{ __('Checkout') }}
           </a>
         </div>
       </div>
@@ -75,11 +76,11 @@
     {{-- Empty Cart --}}
     <div class="text-center py-16">
       <img src="{{ asset('frontend/images/empty_cart.png') }}" alt="Empty Cart" class="mx-auto w-64 mb-6 animate-bounce">
-      <h3 class="text-xl font-semibold text-gray-700">Your cart is empty</h3>
-      <p class="text-gray-500 mt-2">Looks like you haven’t added anything yet.</p>
+      <h3 class="text-xl font-semibold text-gray-700">{{ __('Your cart is empty') }}</h3>
+      <p class="text-gray-500 mt-2">{{ __('Looks like you haven’t added anything yet.') }}</p>
       <a href="{{ route('home') }}" 
          class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition">
-        Browse Products
+        {{ __('Browse Products') }}
       </a>
     </div>
   @endif

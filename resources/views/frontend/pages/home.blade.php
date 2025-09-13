@@ -20,7 +20,7 @@
     {{-- New Arrivals --}}
     <div class="mb-10">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">New Arrivals</h2>
+            <h2 class="text-xl font-bold">{{ __('New Arrivals') }}</h2>
             <div class="flex gap-2">
                 <div class="swiper-button-prev-new text-gray-600 hover:text-black">
                     <i class="bi bi-arrow-left-circle"></i>
@@ -45,7 +45,7 @@
     {{-- Best Sellers --}}
     <div class="mb-10">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Best Sellers</h2>
+            <h2 class="text-xl font-bold">{{ __('Best Sellers') }}</h2>
             <div class="flex gap-2">
                 <div class="swiper-button-prev-best text-gray-600 hover:text-black">
                     <i class="bi bi-arrow-left-circle"></i>
@@ -70,7 +70,7 @@
     {{-- Popular --}}
     <div class="mb-10">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold">Popular Products</h2>
+            <h2 class="text-xl font-bold">{{ __('Popular Products') }}</h2>
             <div class="flex gap-2">
                 <div class="swiper-button-prev-popular text-gray-600 hover:text-black">
                     <i class="bi bi-arrow-left-circle"></i>
@@ -93,6 +93,34 @@
     </div>
 
 </div>
+
+<!-- Service Features -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 text-center">
+                <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                <h5>{{ __('Free Shipping') }}</h5>
+                <p class="text-muted">{{ __('On orders over $99') }}</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <i class="fas fa-undo fa-3x text-success mb-3"></i>
+                <h5>{{ __('Easy Returns') }}</h5>
+                <p class="text-muted">{{ __('30-day return policy') }}</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <i class="fas fa-headset fa-3x text-warning mb-3"></i>
+                <h5>{{ __('24/7 Support') }}</h5>
+                <p class="text-muted">{{ __('Customer service') }}</p>
+            </div>
+            <div class="col-md-3 text-center">
+                <i class="fas fa-shield-alt fa-3x text-info mb-3"></i>
+                <h5>{{ __('Secure Payment') }}</h5>
+                <p class="text-muted">{{ __('100% secure checkout') }}</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 
 @endsection

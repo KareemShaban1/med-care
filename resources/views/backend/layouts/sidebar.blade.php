@@ -4,21 +4,20 @@
       <!-- LOGO -->
       <a class="logo text-center" href="#">
           <span class="logo-lg">
-              <i class="fas fa-laptop-code"></i> <span class="logo-text">Medical Care</span>
+              <i class="fas fa-hospital"></i> <span class="logo-text">Medical Care</span>
           </span>
           <span class="logo-sm">
-              <i class="fas fa-laptop-code"></i>
+              <i class="fas fa-hospital"></i>
           </span>
       </a>
 
       <a class="logo text-center logo-dark">
           <span class="logo-lg text-white">
+              <i class="fas fa-hospital"></i>
               Medical Care
-              <!-- <img src="{{asset('backend/assets/images/logo-dark.png')}}" alt="" height="16"> -->
           </span>
           <span class="logo-sm text-white">
-              Medical Care
-              <!-- <img src="{{asset('backend/assets/images/logo_sm_dark.png')}}" alt="" height="16"> -->
+              <i class="fas fa-hospital"></i>
           </span>
       </a>
 
@@ -28,7 +27,7 @@
           <ul class="side-nav">
               <!-- Dashboard  -->
               <li class="side-nav-item">
-                  <a href="{{route('dashboard')}}" class="side-nav-link">
+                  <a href="{{route('admin.dashboard')}}" class="side-nav-link">
                       <i class="uil-home-alt"></i>
                       <span>
                           {{__('Dashboard')}}
@@ -124,9 +123,7 @@
                               <a href="{{route('admin.orders.index')}}">
                                   <span> {{__('Orders')}} </span>
                               </a>
-                              <a href="">
-                                  <span> {{__('Trash Orders')}} </span>
-                              </a>
+                              
                           </li>
                       </ul>
                   </div>

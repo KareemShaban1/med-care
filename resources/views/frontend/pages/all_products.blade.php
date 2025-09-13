@@ -5,8 +5,6 @@
 
 @section('content')
 
-
-
 <div class="container mx-auto py-8">
     <div class="grid grid-cols-12 gap-6">
 
@@ -17,12 +15,12 @@
                     <div>
                         <input id="searchInput" name="q" value="{{ request('q') }}"
                             class="form-control block w-full rounded-md border-gray-300"
-                            placeholder="Search products" />
+                            placeholder="{{ __('Search Products') }}" />
                     </div>
                     <div>
                         <select name="category" id="categoryFilter"
                             class="form-select block w-full rounded-md border-gray-300">
-                            <option value="">All categories</option>
+                            <option value="">{{ __('All Categories') }}</option>
                             @foreach($categories as $c)
                             <option value="{{ $c->id }}" {{ request('category') == $c->id ? 'selected' : '' }}>
                                 {{ $c->name }}
@@ -33,14 +31,14 @@
                     <div>
                         <select name="sort" id="sortFilter"
                             class="form-select block w-full rounded-md border-gray-300">
-                            <option value="">Sort</option>
+                            <option value="">{{ __('Sort') }}</option>
                             <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price ↑</option>
                             <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price ↓</option>
                         </select>
                     </div>
                     <div class="flex gap-2">
-                        <button class="btn btn-success w-full">Apply</button>
-                        <button type="button" class="btn btn-secondary w-full" id="resetFilters">Reset</button>
+                        <button class="btn btn-success w-full">{{ __('Apply') }}</button>
+                        <button type="button" class="btn btn-secondary w-full" id="resetFilters">{{ __('Reset') }}</button>
                     </div>
                 </form>
             </div>

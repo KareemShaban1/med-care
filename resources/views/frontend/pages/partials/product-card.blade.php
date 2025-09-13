@@ -16,16 +16,16 @@
                  class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
         @else
             <div class="bg-gray-100 flex items-center justify-center h-48 text-gray-400">
-                No Image
+                {{ __('No Image') }}
             </div>
         @endif
 
         {{-- Quick View Button --}}
-        <a href="{{ route('product.show', $product->slug ?? $product->id) }}"
+        <a href="{{ route('product.show', $product->slug) }}"
            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 
                   flex items-center justify-center transition duration-300">
             <span class="px-3 py-2 bg-white text-sm rounded-lg shadow hover:bg-gray-100">
-                View Details
+                {{ __('View Details') }}
             </span>
         </a>
     </div>
@@ -33,21 +33,21 @@
     {{-- Product Info --}}
     <div class="p-4 flex flex-col space-y-2">
         <h6 class="font-semibold text-gray-800 truncate">{{ $product->name }}</h6>
-        <p class="text-xs text-gray-500">Category: {{ $product->category->name ?? '-' }}</p>
+        <p class="text-xs text-gray-500">{{ __('Category') }}: {{ $product->category->name ?? '-' }}</p>
 
         {{-- Prices --}}
         @if($product->old_price)
             <div class="flex items-center space-x-2 mb-2">
                 <p class="text-sm font-bold text-green-600">
-                    EGP {{ number_format($product->price, 2) }}
+                    {{ __('EGP') }} {{ number_format($product->price, 2) }}
                 </p>
                 <p class="text-sm line-through text-red-500">
-                    EGP {{ number_format($product->old_price, 2) }}
+                    {{ __('EGP') }} {{ number_format($product->old_price, 2) }}
                 </p>
             </div>
         @else
             <p class="text-sm font-bold text-gray-700 mb-2">
-                EGP {{ number_format($product->price, 2) }}
+                {{ __('EGP') }} {{ number_format($product->price, 2) }}
             </p>
         @endif
 

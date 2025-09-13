@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto py-10">
-  <h3 class="text-2xl font-bold mb-8 text-center">🛍️ Checkout</h3>
+  <h3 class="text-2xl font-bold mb-8 text-center">🛍️ {{ __('Checkout') }}</h3>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
     
@@ -19,7 +19,7 @@
         @csrf
 
         <div>
-          <label class="block font-medium mb-1">Full name</label>
+          <label class="block font-medium mb-1">{{ __('Full name') }}</label>
           <input name="customer_name" 
                  value="{{ old('customer_name') }}"
                  class="w-full border rounded-md px-3 py-2 focus:ring focus:ring-blue-300"
@@ -30,7 +30,7 @@
         </div>
 
         <div>
-          <label class="block font-medium mb-1">Phone</label>
+          <label class="block font-medium mb-1">{{ __('Phone') }}</label>
           <input name="customer_phone" 
                  value="{{ old('customer_phone') }}"
                  class="w-full border rounded-md px-3 py-2 focus:ring focus:ring-blue-300"
@@ -41,7 +41,7 @@
         </div>
 
         <div>
-          <label class="block font-medium mb-1">Delivery address</label>
+          <label class="block font-medium mb-1">{{ __('Delivery address') }}</label>
           <textarea name="delivery_address" rows="3"
                     class="w-full border rounded-md px-3 py-2 focus:ring focus:ring-blue-300"
                     required>{{ old('delivery_address') }}</textarea>
@@ -51,11 +51,11 @@
         </div>
 
         <div class="flex justify-between items-center border-t pt-4">
-          <strong class="text-lg">Total: 
-            <span class="text-green-600">EGP {{ number_format($total,2) }}</span>
+          <strong class="text-lg">{{ __('Total') }}: 
+            <span class="text-green-600">{{ __('EGP') }} {{ number_format($total,2) }}</span>
           </strong>
           <button class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md transition">
-            Place order →
+            {{ __('Place order') }} →
           </button>
         </div>
       </form>

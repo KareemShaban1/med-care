@@ -33,7 +33,7 @@
                     <img src="{{ $product->main_image_url }}"
                         class="w-full h-48 object-cover transform group-hover:scale-105 transition duration-500">
                     @else
-                    <div class="bg-gray-100 flex items-center justify-center h-48">No Image</div>
+                    <div class="bg-gray-100 flex items-center justify-center h-48">{{ __('No Image') }}</div>
                     @endif
 
                     {{-- Quick View Button --}}
@@ -41,28 +41,28 @@
                         class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 
                           flex items-center justify-center transition duration-300">
                         <span class="px-3 py-2 bg-white text-sm rounded-lg shadow hover:bg-gray-100">
-                            View Details
+                           {{ __(' View Details') }}
                         </span>
                     </a>
                 </div>
 
                 {{-- Product Info --}}
                 <div class="p-4 flex flex-col space-y-2">
-                    <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none text-gray-800">
+                    <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none text-gray-800">
                         <h6 class="font-semibold text-gray-800 truncate text-lg">{{ $product->name }}</h6>
                     </a>
-                    <p class="text-sm text-gray-500">Category:
+                    <p class="text-sm text-gray-500">{{ __('Category') }}:
                         <span class="badge bg-primary text-white">{{ $product->category->name }}</span>
                     </p>
 
                     {{-- Prices --}}
                     @if($product->old_price)
                     <div class="flex items-center space-x-2 mb-2 gap-2">
-                        <p class="text-sm font-bold text-green-600">EGP {{ number_format($product->price,2) }}</p>
-                        <p class="text-sm line-through text-red-500">EGP {{ number_format($product->old_price,2) }}</p>
+                        <p class="text-sm font-bold text-green-600">{{ __('EGP') }} {{ number_format($product->price,2) }}</p>
+                        <p class="text-sm line-through text-red-500">{{ __('EGP') }} {{ number_format($product->old_price,2) }}</p>
                     </div>
                     @else
-                    <p class="text-sm font-bold text-gray-700 mb-2">EGP {{ number_format($product->price,2) }}</p>
+                    <p class="text-sm font-bold text-gray-700 mb-2">{{ __('EGP') }} {{ number_format($product->price,2) }}</p>
                     @endif
 
                     {{-- Add to Cart --}}

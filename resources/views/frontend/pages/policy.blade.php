@@ -8,9 +8,11 @@
     {{-- Card Wrapper --}}
     <div class="bg-white shadow-xl rounded-2xl p-8 md:p-12">
         {{-- Header --}}
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center">Privacy & Policy</h1>
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
+            {{ __('Privacy & Policy') }}
+        </h1>
         <p class="text-gray-600 mb-8 text-center max-w-3xl mx-auto">
-            Your privacy and health data are our top priority. Please review our policies to understand how we handle your information.
+            {{ __('Policy Description') }}
         </p>
 
         {{-- Tabs --}}
@@ -21,7 +23,7 @@
 
         {{-- Content --}}
         <div id="privacy" class="tab-content space-y-6">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Privacy Policy</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ __('Privacy Policy') }}</h2>
             <p class="text-gray-700 leading-relaxed">
                 At <span class="font-semibold">MediStore</span>, we are committed to protecting your personal and medical information. All your data is handled with strict confidentiality.
             </p>

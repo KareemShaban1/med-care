@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\OrderController as AdminOrder;
 use App\Http\Controllers\Backend\CategoryController as AdminCategory;
 use App\Http\Controllers\Backend\BannerController as AdminBanner;
 use App\Http\Controllers\Backend\ActivityLogController as ActivityLogController;
+use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Frontend\HomeController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -63,6 +64,9 @@ Route::group([
     Route::get('/', function () {
         return redirect()->route('products.index');
     });
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 
     Route::get('banners/data', [AdminBanner::class, 'data'])->name('banners.data');
     Route::post('banners/update-status', [AdminBanner::class, 'updateStatus'])->name('banners.update-status');
