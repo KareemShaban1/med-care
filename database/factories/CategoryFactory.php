@@ -4,22 +4,25 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
- */
 class CategoryFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
+        $medicalCategories = [
+            'Medical Devices',
+            'Pharmaceuticals',
+            'Supplements',
+            'Diagnostics',
+            'Personal Care',
+            'Protective Equipment',
+            'Surgical Instruments',
+            'Wellness & Fitness',
+        ];
+
         return [
-            'name' => $this->faker->words(3,true),
-            'slug' => $this->faker->unique()->slug,
-            'status' => $this->faker->boolean(70),
+            'name'   => $this->faker->unique()->randomElement($medicalCategories),
+            'slug'   => $this->faker->unique()->slug,
+            'status' => $this->faker->boolean(100),
         ];
     }
 }

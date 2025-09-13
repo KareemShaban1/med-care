@@ -19,12 +19,12 @@ class BannerFactory extends Factory
         ];
     }
 
-    public function configure()
-    {
-        return $this->afterCreating(function (Banner $banner) {
-            // Attach a random placeholder image
-            $banner->addMediaFromUrl('https://picsum.photos/1200/400?random=' . rand(1, 1000))
-                   ->toMediaCollection('banners');
-        });
-    }
+    // public function configure()
+    // {
+    //     return $this->afterCreating(function (Banner $banner) {
+    //         // Attach a random placeholder image
+    //         $banner->addMediaFromUrl('https://picsum.photos/1200/400?random=' . rand(1, 1000))
+    //                ->toMediaCollection('banners');
+    //     });
+    // }
 }
