@@ -30,7 +30,7 @@ class StoreProductRequest extends FormRequest
             'category_id' => 'required|exists:categories,id',
             'status' => 'boolean',
             'featured' => 'boolean',
-            'type' => 'required|in:normal,best_seller,new_arrival,popular,top_rated',
+            'type' => 'in:normal,best_seller,new_arrival,popular,top_rated',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'gallery.*' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ];

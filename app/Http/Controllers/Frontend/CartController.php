@@ -26,9 +26,9 @@ class CartController extends Controller
         return $this->cartRepositoryInterface->index();
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        return $this->cartRepositoryInterface->update($request);
+        return $this->cartRepositoryInterface->update($request, $id);
     }
 
     public function remove($id)

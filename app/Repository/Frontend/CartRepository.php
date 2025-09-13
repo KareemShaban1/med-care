@@ -54,34 +54,61 @@ class CartRepository implements CartRepositoryInterface
         return view('frontend.pages.cart', compact('cart', 'total'));
     }
 
-    public function update($request)
+    public function update($request, $id)
     {
         $cart = $this->getCart();
-
-        foreach ($request->input('quantity', []) as $id => $qty) {
-            $product = Product::find($id);
-
-            if (!$product) continue; // skip if product not found
-
-            if ($qty <= 0) {
-                unset($cart[$id]);
-                continue;
-            }
-
-            if ($qty > $product->stock) {
-                // cap the quantity at stock limit
-                $cart[$id]['quantity'] = $product->stock;
-                session(['cart' => $cart]);
-                return redirect()->route('cart.index')->with('toast_error', 'Only ' . $product->stock . ' pcs available for ' . $product->name);
-            }
-
-            $cart[$id]['quantity'] = (int)$qty;
+        $product = Product::find($id);
+    
+        if (!$product) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found'
+            ], 404);
         }
-
+    
+        $qty = (int) $request->input('quantity', 1);
+    
+        // remove item if quantity is 0 or less
+        if ($qty <= 0) {
+            unset($cart[$id]);
+            session(['cart' => $cart]);
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Item removed from cart',
+                'removed' => true
+            ]);
+        }
+    
+        // stock validation
+        if ($qty > $product->stock) {
+            $cart[$id]['quantity'] = $product->stock;
+            session(['cart' => $cart]);
+    
+            return response()->json([
+                'success' => false,
+                'message' => 'Only ' . $product->stock . ' pcs available for ' . $product->name,
+                'quantity' => $product->stock
+            ], 400);
+        }
+    
+        // update quantity
+        $cart[$id]['quantity'] = $qty;
         session(['cart' => $cart]);
-
-        return redirect()->route('cart.index')->with('toast_success', 'Cart updated');
+    
+        // calculate totals
+        $subtotal = $product->price * $qty;
+        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Cart updated',
+            'quantity' => $qty,
+            'subtotal' => number_format($subtotal, 2),
+            'total' => number_format($total, 2)
+        ]);
     }
+    
 
     public function remove($id)
     {
