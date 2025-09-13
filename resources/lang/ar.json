@@ -127,5 +127,14 @@
     "your order has been received.": "تم استلام طلبك.",
     "Order": "الطلب",
     "Order Summary": "ملخص الطلب",
-    "Continue Shopping": "أكمل التسوق"
+    "Continue Shopping": "أكمل التسوق",
+    "Customer name is required": "اسم العميل مطلوب",
+    "Customer name must be at least 5 characters": "اسم العميل يجب أن يكون على الأقل 5 حروف",
+    "Customer name must be at most 255 characters": "اسم العميل يجب أن يكون على الأكثر 255 حرف",
+    "Customer phone is required": "هاتف العميل مطلوب",
+    "Customer phone must be at least 11 characters": "هاتف العميل يجب أن يكون على الأقل 11 رقم",
+    "Customer phone must be at most 15 characters": "هاتف العميل يجب أن يكون على الأكثر 15 رقم",
+    "Delivery address is required": "عنوان التوصيل مطلوب",
+    "Delivery address must be at least 10 characters": "عنوان التوصيل يجب أن يكون على الأقل 10 حرف",
+    "Delivery address must be at most 1000 characters": "عنوان التوصيل يجب أن يكون على الأكثر 1000 حرف"
 }

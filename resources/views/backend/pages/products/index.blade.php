@@ -27,6 +27,7 @@
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('Category') }}</th>
                                 <th>{{ __('Status') }}</th>
+                                <th>{{ __('Stock') }}</th>
                                 <th>{{ __('Price') }}</th>
                                 <th>{{ __('Actions') }}</th>
                             </tr>
@@ -63,6 +64,10 @@
             {
                 data: 'status',
                 name: 'status'
+            },
+            {
+                data: 'stock',
+                name: 'stock'
             },
             {
                 data: 'price',
