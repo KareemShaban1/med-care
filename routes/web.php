@@ -47,7 +47,7 @@ Route::group([
 
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
-    Route::get('/order/confirmation/{id}', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
+    Route::get('/order/confirmation/{uuid}', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
 });
 require __DIR__ . '/auth.php';
 

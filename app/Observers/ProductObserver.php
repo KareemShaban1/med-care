@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Models\Product;
 
-class ProductObserver
+class ProductObserver extends GenericObserver
 {
     //
 

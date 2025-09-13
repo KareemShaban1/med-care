@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Models\Category;
 
-class CategoryObserver
+class CategoryObserver extends GenericObserver
 {
     //
     public function creating(Category $category)

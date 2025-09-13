@@ -62,16 +62,17 @@ class CheckoutRepository implements CheckoutRepositoryInterface
             DB::commit();
             session()->forget('cart');
 
-            return redirect()->route('order.confirmation', $order->id);
+            return redirect()->route('order.confirmation', $order->uuid);
         } catch (\Throwable $e) {
             DB::rollBack();
             return redirect()->back()->with('toast_error', $e->getMessage());
         }
     }
 
-    public function confirmation($orderId)
+    public function confirmation($uuid)
     {
-        $order = Order::with('orderItems.product')->findOrFail($orderId);
+        $order = Order::with('orderItems.product')
+        ->where('uuid', $uuid)->firstOrFail();
         return view('frontend.pages.order_confirmation', compact('order'));
     }
 }
