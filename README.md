@@ -61,6 +61,7 @@ cd medical-care
 
 ```bash
 composer install
+npm install
 ```
 
 ### Step 3: Environment Setup
@@ -109,6 +110,7 @@ php artisan storage:link
 
 ```bash
 php artisan serve
+npm run dev
 ```
 
 Visit `http://localhost:8000` in your browser to access the application.
