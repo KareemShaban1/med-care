@@ -4,14 +4,14 @@ namespace App\Repository\Frontend;
 
 interface HomeRepositoryInterface {
 
-    public function index($request);
+    public function getHomeData($request);
 
-    public function showProduct($slug);
+    public function getProductBySlug($slug);
 
-    public function allProducts($request);
+    public function getAllProducts($request);
 
-    public function policy();
+    public function getPolicyData();
 
-    public function contact();
+    public function getContactData();
 
 }

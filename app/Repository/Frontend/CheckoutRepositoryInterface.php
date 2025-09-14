@@ -2,10 +2,10 @@
 namespace App\Repository\Frontend;
 interface CheckoutRepositoryInterface {
 
-    public function show();
+    public function getCheckoutData(): array;
 
-    public function process($request);
+    public function processCheckout($data): string;
 
-    public function confirmation($orderId);
+    public function getOrderConfirmation($uuid);
 
 }

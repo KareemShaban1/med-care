@@ -12,56 +12,57 @@ use App\Repository\Admin\OrderRepositoryInterface;
 class OrderController extends Controller
 {
 
-    protected $order;
+    protected $orderRepo;
 
-    public function __construct(OrderRepositoryInterface $order)
+    public function __construct(OrderRepositoryInterface $orderRepo)
     {
-        $this->order = $order;
+        $this->orderRepo = $orderRepo;
     }
 
     public function index()
     {
-        return $this->order->index();
+        return view('backend.pages.orders.index');
     }
 
     public function data()
     {
-        return $this->order->data();
+        return $this->orderRepo->data();
     }
 
     public function create()
     {
-        return $this->order->create();
+        return view('backend.pages.orders.create');
     }
 
     public function store(StoreOrderRequest $request)
     {
-        return $this->order->store($request);
+        return $this->orderRepo->store($request);
     }
 
-    public function show(Order $order)
+    public function show($uuid)
     {
-        return $this->order->show($order);
+        return $this->orderRepo->show($uuid);
     }
 
-    public function edit(Order $order)
+    public function edit($uuid)
     {
-        return $this->order->edit($order);
+        $order = $this->orderRepo->edit($uuid);
+        return view('backend.pages.orders.edit', compact('order'));
     }
 
-    public function update(UpdateOrderRequest $request, Order $order)
+    public function update(UpdateOrderRequest $request, $uuid)
     {
-        return $this->order->update($request, $order);
+        return $this->orderRepo->update($request, $uuid);
     }
 
-    public function destroy(Order $order)
+    public function destroy($uuid)
     {
-        return $this->order->destroy($order);
+        return $this->orderRepo->destroy($uuid);
     }
 
-    public function changeStatus(Request $request, Order $order)
+    public function changeStatus(Request $request, $uuid)
     {
-        return $this->order->changeStatus($request, $order);
+        return $this->orderRepo->changeStatus($request, $uuid);
     }
    
 }

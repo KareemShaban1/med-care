@@ -248,9 +248,9 @@
                 $('#bannersModal .modal-title').text('{{ __("Edit Banner") }}');
 
                 // show existing image preview (if provided)
-                if (data.image) {
+                if (data.image_url) {
                     // data.image might be full URL or storage path — attempt to use as-is
-                    $('#imagePreview').attr('src', data.image).show();
+                    $('#imagePreview').attr('src', data.image_url).show();
                 } else {
                     $('#imagePreview').hide().attr('src', '');
                 }

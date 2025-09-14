@@ -10,9 +10,7 @@
         <div class="wrapper">
           
         @include('backend.layouts.sidebar')
-            <!-- ============================================================== -->
-            <!-- Start Page Content here -->
-            <!-- ============================================================== -->
+           
 
             <div class="content-page">
                 <div class="content">
@@ -34,11 +32,7 @@
                                 <script>document.write(new Date().getFullYear())</script> © kareem shaban
                             </div>
                             <div class="col-md-6">
-                                <!-- <div class="text-md-end footer-links d-none d-md-block">
-                                    <a href="javascript: void(0);">About</a>
-                                    <a href="javascript: void(0);">Support</a>
-                                    <a href="javascript: void(0);">Contact Us</a>
-                                </div> -->
+                               
                             </div>
                         </div>
                     </div>
@@ -46,10 +40,6 @@
                 <!-- end Footer -->
 
             </div>
-
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
 
 
         </div>

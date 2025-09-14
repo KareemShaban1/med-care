@@ -7,30 +7,56 @@ use Illuminate\Http\Request;
 
 class CartRepository implements CartRepositoryInterface
 {
-    protected function getCart()
+    /**
+     * Get the cart from session
+     */
+    protected function getCart(): array
     {
         return session()->get('cart', []);
     }
 
-    public function add($request, $id)
+    /**
+     * Save cart to session
+     */
+    protected function saveCart(array $cart): void
+    {
+        session(['cart' => $cart]);
+    }
+
+    /**
+     * Calculate total of cart
+     */
+    protected function calculateTotal(array $cart): float
+    {
+        return array_reduce($cart, fn($sum, $item) => $sum + ($item['price'] * $item['quantity']), 0);
+    }
+
+    /**
+     * Add product to cart
+     * steps:
+     * 1. get product
+     * 2. get cart
+     * 3. check stock
+     * 4. check if product is already in cart
+     * 5. add product to cart
+     */
+    public function add($request, $id): array
     {
         $product = Product::findOrFail($id);
         $cart = $this->getCart();
-
         $qty = max(1, (int)$request->input('quantity', 1));
 
-        // check stock before adding
+        // check stock
         if ($qty > $product->stock) {
-            return redirect()->back()->with('toast_error', 'Only ' . $product->stock . ' pcs available in stock.');
+            return ['success' => false, 'message' => 'Only ' . $product->stock . ' pcs available in stock.'];
         }
 
+        // check if product is already in cart
         if (isset($cart[$id])) {
             $newQty = $cart[$id]['quantity'] + $qty;
-
             if ($newQty > $product->stock) {
-                return redirect()->back()->with('toast_error', 'Cannot add more than ' . $product->stock . ' pcs of this product.');
+                return ['success' => false, 'message' => 'Cannot add more than ' . $product->stock . ' pcs of this product.'];
             }
-
             $cart[$id]['quantity'] = $newQty;
         } else {
             $cart[$id] = [
@@ -42,82 +68,96 @@ class CartRepository implements CartRepositoryInterface
             ];
         }
 
-        session(['cart' => $cart]);
+        $this->saveCart($cart);
 
-        return redirect()->back()->with('toast_success', 'Added to cart');
+        return ['success' => true, 'message' => 'Added to cart', 'cart' => $cart];
     }
 
-    public function index()
+    /**
+     * Get cart contents
+     */
+    public function index(): array
     {
         $cart = $this->getCart();
-        $total = array_reduce($cart, fn($sum, $i) => $sum + ($i['price'] * $i['quantity']), 0);
-        return view('frontend.pages.cart', compact('cart', 'total'));
+        $total = $this->calculateTotal($cart);
+
+        return ['cart' => $cart, 'total' => $total];
     }
 
-    public function update($request, $id)
+    /**
+     * Update cart item
+     * steps:
+     * 1. get cart
+     * 2. get product
+     * 3. check if product exists
+     * 4. check quantity
+     * 5. remove item if quantity is 0
+     * 6. check stock
+     * 7. update cart
+     */
+    public function update($request, $id): array
     {
         $cart = $this->getCart();
         $product = Product::find($id);
-    
+
+        // check if product exists
         if (!$product) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product not found'
-            ], 404);
+            return ['success' => false, 'message' => 'Product not found'];
         }
-    
-        $qty = (int) $request->input('quantity', 1);
-    
-        // remove item if quantity is 0 or less
-        if ($qty <= 0) {
+
+        // check quantity
+        $qty = max(0, (int)$request->input('quantity', 1));
+
+        // remove item if quantity is 0
+        if ($qty === 0) {
             unset($cart[$id]);
-            session(['cart' => $cart]);
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'Item removed from cart',
-                'removed' => true
-            ]);
+            $this->saveCart($cart);
+
+            return ['success' => true, 'message' => 'Item removed from cart', 'removed' => true, 'cart' => $cart];
         }
-    
-        // stock validation
+
+        // check stock
         if ($qty > $product->stock) {
             $cart[$id]['quantity'] = $product->stock;
-            session(['cart' => $cart]);
-    
-            return response()->json([
+            $this->saveCart($cart);
+
+            return [
                 'success' => false,
                 'message' => 'Only ' . $product->stock . ' pcs available for ' . $product->name,
-                'quantity' => $product->stock
-            ], 400);
+                'quantity' => $product->stock,
+                'cart' => $cart
+            ];
         }
-    
-        // update quantity
+
         $cart[$id]['quantity'] = $qty;
-        session(['cart' => $cart]);
-    
-        // calculate totals
-        $subtotal = $product->price * $qty;
-        $total = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']);
-    
-        return response()->json([
+        $this->saveCart($cart);
+
+        return [
             'success' => true,
             'message' => 'Cart updated',
             'quantity' => $qty,
-            'subtotal' => number_format($subtotal, 2),
-            'total' => number_format($total, 2)
-        ]);
+            'subtotal' => number_format($product->price * $qty, 2),
+            'total' => number_format($this->calculateTotal($cart), 2),
+            'cart' => $cart
+        ];
     }
-    
 
-    public function remove($id)
+    /**
+     * Remove item from cart
+     * steps:
+     * 1. get cart
+     * 2. check if product exists
+     * 3. remove item
+     * 4. save cart
+     */
+    public function remove($id): array
     {
         $cart = $this->getCart();
         if (isset($cart[$id])) {
             unset($cart[$id]);
-            session(['cart' => $cart]);
+            $this->saveCart($cart);
         }
 
-        return response()->json(['success' => true, 'cart' => $cart]);
+        return ['success' => true, 'cart' => $cart];
     }
 }

@@ -12,66 +12,70 @@ use App\Repository\Admin\CategoryRepositoryInterface;
 
 class CategoryController extends Controller
 {
-    protected $category;
+    protected $categoryRepo;
 
-    public function __construct(CategoryRepositoryInterface $category)
+    public function __construct(CategoryRepositoryInterface $categoryRepo)
     {
-        $this->category = $category;
+        $this->categoryRepo = $categoryRepo;
     }
 
     public function index()
     {
-        return $this->category->index();
+        return view('backend.pages.categories.index');
     }
 
     public function data()
     {
-        return $this->category->data();
+        return $this->categoryRepo->data();
     }
 
     public function store(StoreCategoryRequest $request)
     {
-        return $this->category->store($request);
+        return $this->categoryRepo->store($request);
     }
 
-    public function show(Category $category)
+    public function show($id)
     {
-        return $this->category->show($category);
+        $category = $this->categoryRepo->show($id);
+
+        return request()->ajax()
+            ? response()->json($category)
+            : view('backend.pages.categories.show', compact('category'));
     }
 
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, $id)
     {
-        return $this->category->update($request, $category);
+        return $this->categoryRepo->update($request, $id);
     }
 
     public function updateStatus(Request $request)
     {
-        return $this->category->updateStatus($request);
+        return $this->categoryRepo->updateStatus($request);
     }
 
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        return $this->category->destroy($category);
+        return $this->categoryRepo->destroy($id);
     }
 
     public function trash()
     {
-        return $this->category->trash();
+        return view('backend.pages.categories.trash');
     }
 
     public function trashData()
     {
-        return $this->category->trashData();
+        return $this->categoryRepo->trashData();
     }
 
     public function restore($id)
     {
-        return $this->category->restore($id);
+        return $this->categoryRepo->restore($id);
     }
 
     public function forceDelete($id)
     {
-        return $this->category->forceDelete($id);
+        return $this->categoryRepo->forceDelete($id);
     }
 
 }

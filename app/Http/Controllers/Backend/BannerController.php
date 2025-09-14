@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBannerRequest;
 use App\Http\Requests\UpdateBannerRequest;
@@ -10,66 +11,69 @@ use Illuminate\Http\Request;
 
 class BannerController extends Controller
 {
-    
-    protected $banner;
 
-    public function __construct(BannerRepositoryInterface $banner)
+    protected $bannerRepo;
+
+    public function __construct(BannerRepositoryInterface $bannerRepo)
     {
-        $this->banner = $banner;
+        $this->bannerRepo = $bannerRepo;
     }
 
     public function index()
     {
-        return $this->banner->index();
+        return view('backend.pages.banners.index');
     }
 
     public function data()
     {
-        return $this->banner->data();
+        return $this->bannerRepo->data();
     }
 
     public function store(StoreBannerRequest $request)
     {
-        return $this->banner->store($request);
+        return $this->bannerRepo->store($request);
     }
 
-    public function show(Banner $banner)
+    public function show($id)
     {
-        return $this->banner->show($banner);
+        $banner = $this->bannerRepo->show($id);
+        return request()->ajax()
+            ? response()->json($banner)
+            : view('backend.pages.banners.show', compact('banner'));
     }
 
-    public function update(UpdateBannerRequest $request, Banner $banner)
+    public function update(UpdateBannerRequest $request, $id)
     {
-        return $this->banner->update($request, $banner);
+        return $this->bannerRepo->update($request, $id);
     }
 
     public function updateStatus(Request $request)
     {
-        return $this->banner->updateStatus($request);
+        return $this->bannerRepo->updateStatus($request);
     }
 
-    public function destroy(Banner $banner)
+    public function destroy($id)
     {
-        return $this->banner->destroy($banner);
+        return $this->bannerRepo->destroy($id);
     }
 
     public function trash()
     {
-        return $this->banner->trash();
+        return view('backend.pages.banners.trash');
     }
 
     public function trashData()
     {
-        return $this->banner->trashData();
+        return $this->bannerRepo->trashData();
     }
 
     public function restore($id)
     {
-        return $this->banner->restore($id);
+        return $this->bannerRepo->restore($id);
     }
 
     public function forceDelete($id)
     {
-        return $this->banner->forceDelete($id);
-    } 
+        return $this->bannerRepo->forceDelete($id);
+    }
 }

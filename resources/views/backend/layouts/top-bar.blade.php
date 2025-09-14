@@ -1,7 +1,7 @@
    <!-- Topbar Start -->
    <div class="navbar-custom">
        <ul class="list-unstyled topbar-menu float-end mb-0">
-          
+
            <li class="dropdown notification-list topbar-dropdown">
                <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                    <!-- <img src="{{asset('backend/assets/images/flags/us.jpg')}}" alt="user-image" class="me-0 me-sm-1" height="12">  -->
@@ -42,31 +42,30 @@
                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown">
                    <!-- item-->
                    <div class=" dropdown-header noti-title">
-                       <h6 class="text-overflow m-0">Welcome !</h6>
+                       <h6 class="text-overflow m-0">{{ __('Welcome !') }}</h6>
                    </div>
 
-                   <!-- item-->
+                   <!-- profile -->
                    <a href="" class="dropdown-item notify-item">
                        <i class="mdi mdi-account-circle me-1"></i>
-                       <span>My Account</span>
+                       <span>{{ __('My Account') }}</span>
                    </a>
 
-                   <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
-                       <i class="mdi mdi-account-edit me-1"></i>
-                       <span>Settings</span>
-                   </a>
 
-                   <a href="javascript:void(0);" class="dropdown-item notify-item">
-                       <i class="mdi mdi-lifebuoy me-1"></i>
-                       <span>Support</span>
-                   </a>
 
-                   <a href="javascript:void(0);" class="dropdown-item notify-item">
-                       <i class="mdi mdi-lock-outline me-1"></i>
-                       <span>Lock Screen</span>
-                   </a> -->
+                   <!-- logout -->
+                   <form method="POST" action="{{ route('logout') }}">
+                       @csrf
+                       <a class="dropdown-item" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                            this.closest('form').submit(); "
+                           role="button">
 
-                 
+                           <i class="mdi mdi-logout me-1"></i>
+                           <span>{{ __('Logout') }}</span>
+                       </a> 
+                   </form>
+
 
                </div>
            </li>

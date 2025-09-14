@@ -9,41 +9,50 @@ use App\Models\Product;
 use App\Repository\Frontend\HomeRepositoryInterface;
 use Illuminate\Http\Request;
 
-
 class HomeController extends Controller
 {
-    //
-    protected $homeRepositoryInterface;
+    protected HomeRepositoryInterface $homeRepo;
 
-    public function __construct(HomeRepositoryInterface $homeRepositoryInterface)
+    public function __construct(HomeRepositoryInterface $homeRepo)
     {
-        $this->homeRepositoryInterface = $homeRepositoryInterface;
+        $this->homeRepo = $homeRepo;
     }
 
     public function index(Request $request)
     {
-        return $this->homeRepositoryInterface->index($request);
+        $data = $this->homeRepo->getHomeData($request);
+
+        if ($request->ajax()) {
+            return view('frontend.pages.partials.products', $data)->render();
+        }
+
+        return view('frontend.pages.home', $data);
     }
 
-    public function showProduct($slug)
+    public function showProduct(string $slug)
     {
-        return $this->homeRepositoryInterface->showProduct($slug);
+        $product = $this->homeRepo->getProductBySlug($slug);
+        return view('frontend.pages.product_show', compact('product'));
     }
 
-    public function allProducts(Request $request)
+    public function getAllProducts(Request $request)
     {
-        return $this->homeRepositoryInterface->allProducts($request);
+        $data = $this->homeRepo->getAllProducts($request);
+
+        if ($request->ajax()) {
+            return view('frontend.pages.partials.products', $data)->render();
+        }
+
+        return view('frontend.pages.all_products', $data);
     }
 
     public function policy()
     {
-        return $this->homeRepositoryInterface->policy();
-    } 
+        return view('frontend.pages.policy');
+    }
 
     public function contact()
     {
-        return $this->homeRepositoryInterface->contact();
-    } 
-
-
+        return view('frontend.pages.contact');
+    }
 }

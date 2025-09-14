@@ -2,236 +2,208 @@
 
 namespace App\Repository\Admin;
 
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
-use App\Models\Category;
 use App\Models\Product;
-use App\Repository\Admin\ProductInterface;
-use Illuminate\Http\Request;
+use App\Models\Category;
 
 class ProductRepository implements ProductRepositoryInterface
 {
+    /** ---------------------- PUBLIC METHODS ---------------------- */
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of the products.
      */
     public function index()
     {
-        $products = Product::all();
-
-        return view('backend.pages.products.index', compact('products'));
+        return view('backend.pages.products.index');
     }
 
+    /**
+     * Get the products data.
+     */
     public function data()
     {
         $products = Product::with('category');
+
         return datatables()->of($products)
-            ->addColumn('category', function ($item) {
-                return $item->category->name ?? '';
-            })
-            ->addColumn('image', function ($item) {
-                return '<img src="' . $item->main_image_url . '" alt="" class="img-fluid" style="width: 100px;">';
-            })
-            ->editColumn('status', function ($item) {
-                $checked = $item->status ? 'checked' : '';
-                return '
-                <div class="form-check form-switch mt-2">
-                    <input type="hidden" name="status" value="0">
-                    <input type="checkbox" class="form-check-input toggle-boolean" 
-                           data-id="' . $item->id . '" 
-                           data-field="status" 
-                           id="status-' . $item->id . '" 
-                           name="status" value="1" ' . $checked . '>
-                </div>';
-            })
-            ->addColumn('action', function ($item) {
-                $btn = '<div class="d-flex gap-2">';
-                $btn .= '<a href="' . route('admin.products.edit', $item->id) . '" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>';
-                $btn .= '<button onclick="deleteProduct(' . $item->id . ')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>';
-                $btn .= '</div>';
-                return $btn;
-            })
-            ->rawColumns(['status', 'action', 'image'])
+            ->addColumn('category', fn($item) => $item->category->name ?? '')
+            ->addColumn('image', fn($item) => $this->productImage($item))
+            ->editColumn('status', fn($item) => $this->productStatus($item))
+            ->addColumn('action', fn($item) => $this->productActions($item))
+            ->rawColumns(['image', 'status', 'action'])
             ->make(true);
     }
 
-
+    /**
+     * Show the form for creating a new product.
+     */
     public function create()
     {
-        $categories = Category::all();
-        return view('backend.pages.products.create', compact('categories'));
+        return [];
     }
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store($request)
     {
-        try {
-            $product = Product::create($request->validated());
-
-            // Main image
-            if ($request->hasFile('image')) {
-                $product->addMedia($request->file('image'))->toMediaCollection('products');
-            }
-
-            // Gallery images
-            if ($request->hasFile('gallery')) {
-                // delete old gallery first
-                $product->clearMediaCollection('products_gallery');
-
-                foreach ($request->file('gallery') as $image) {
-                    $product->addMedia($image)->toMediaCollection('products_gallery');
-                }
-            }
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'status'  => 'success',
-                    'message' => __('Product created successfully'),
-                ]);
-            }
-
-            return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ]);
-        }
+        return $this->saveProduct(new Product(), $request, 'created');
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($product)
+    public function show($id)
     {
-        if (request()->ajax()) {
-            return response()->json($product);
-        }
-        return view('backend.pages.products.show', compact('product'));
+
+        return Product::findOrFail($id);
     }
 
-    public function edit($product)
+    public function edit($id)
     {
-        $categories = Category::all();
-        return view('backend.pages.products.edit', compact('product', 'categories'));
+        return Product::findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update($request, $product)
     {
-
-        try {
-            $product->update($request->validated());
-
-
-            // ✅ Image update
-            if ($request->hasFile('image')) {
-                $product->clearMediaCollection('products');
-                $product->addMedia($request->file('image'))->toMediaCollection('products');
-            }
-
-            // ✅ Gallery update
-            if ($request->hasFile('gallery')) {
-                $product->clearMediaCollection('products_gallery');
-                foreach ($request->file('gallery') as $image) {
-                    $product->addMedia($image)->toMediaCollection('products_gallery');
-                }
-            }
-
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'status'  => 'success',
-                    'message' => __('Product updated successfully'),
-                ]);
-            }
-
-            return redirect()->route('admin.products.index')->with('success', 'Product updated successfully');
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ]);
-        }
+        return $this->saveProduct($product, $request, 'updated');
     }
 
     public function updateStatus($request)
     {
         $product = Product::findOrFail($request->id);
-        $product->status = $request->status;
+        $product->status = (bool)$request->status;
         $product->save();
-        return response()->json([
-            'status'  => 'success',
-            'message' => __('Product status updated successfully'),
-        ]);
+
+        return $this->jsonResponse('success', __('Product status updated successfully'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($product)
+    public function destroy($id)
     {
+        $product = Product::findOrFail($id);
         $product->delete();
-        if (request()->ajax()) {
-            return response()->json([
-                'status'  => 'success',
-                'message' => __('Product deleted successfully'),
-            ]);
-        }
-        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
+        return $this->jsonResponse('success', __('Product deleted successfully'));
     }
 
     public function trash()
     {
         return view('backend.pages.products.trash');
     }
-    
+
     public function trashData()
     {
         $products = Product::onlyTrashed();
-    
-        return datatables()->of($products)
 
-            ->addColumn('status', function ($product) {
-                return '<span class="badge bg-secondary">Trashed</span>';
-            })
-            ->addColumn('action', function ($product) {
-                return '
-                    <button class="btn btn-sm btn-success" onclick="restoreProduct('.$product->id.')">
-                        <i class="mdi mdi-restore"></i> Restore
-                    </button>
-                    <button class="btn btn-sm btn-danger" onclick="forceDeleteProduct('.$product->id.')">
-                        <i class="mdi mdi-delete-forever"></i> Delete
-                    </button>
-                ';
-            })
+        return datatables()->of($products)
+            ->addColumn('status', fn() => '<span class="badge bg-secondary">Trashed</span>')
+            ->addColumn('action', fn($item) => $this->trashActions($item))
             ->rawColumns(['status', 'action'])
             ->make(true);
     }
-    
 
     public function restore($id)
     {
         $product = Product::onlyTrashed()->findOrFail($id);
         $product->restore();
-        return redirect()->route('admin.products.index')->with('success', 'Product restored successfully');
+
+        return redirect()->route('admin.products.index')->with('success', __('Product restored successfully'));
     }
 
     public function forceDelete($id)
     {
         $product = Product::onlyTrashed()->findOrFail($id);
+        $this->deleteMedia($product);
         $product->forceDelete();
 
-        if (request()->ajax()) {
-            return response()->json([
-                'status'  => 'success',
-                'message' => __('Product deleted successfully'),
-            ]);
-        }
-        return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully');
+        return $this->jsonResponse('success', __('Product permanently deleted successfully'));
     }
 
+    /** ---------------------- PRIVATE HELPERS ---------------------- */
+
+    private function saveProduct(Product $product, $request, string $action)
+    {
+        try {
+            $product->fill($request->validated())->save();
+
+            $this->handleMedia($product, $request);
+
+            if ($request->ajax()) {
+                return $this->jsonResponse('success', __('Product '.$action.' successfully'));
+            }
+
+            return redirect()->route('admin.products.index')->with('success', __('Product '.$action.' successfully'));
+        } catch (\Throwable $e) {
+            return $this->jsonResponse('error', $e->getMessage());
+        }
+    }
+
+    private function handleMedia(Product $product, $request)
+    {
+        // Main image
+        if ($request->hasFile('image')) {
+            $product->clearMediaCollection('products');
+            $product->addMedia($request->file('image'))->toMediaCollection('products');
+        }
+
+        // Gallery images
+        if ($request->hasFile('gallery')) {
+            $product->clearMediaCollection('products_gallery');
+            foreach ($request->file('gallery') as $image) {
+                $product->addMedia($image)->toMediaCollection('products_gallery');
+            }
+        }
+    }
+
+    private function deleteMedia(Product $product)
+    {
+        $product->clearMediaCollection('products');
+        $product->clearMediaCollection('products_gallery');
+    }
+
+    private function productImage(Product $item): string
+    {
+        return '<img src="' . $item->main_image_url . '" class="img-fluid" style="max-width:100px;">';
+    }
+
+    private function productStatus(Product $item): string
+    {
+        $checked = $item->status ? 'checked' : '';
+        return <<<HTML
+            <div class="form-check form-switch mt-2">
+                <input type="hidden" name="status" value="0">
+                <input type="checkbox" class="form-check-input toggle-boolean"
+                       data-id="{$item->id}" data-field="status" id="status-{$item->id}"
+                       name="status" value="1" {$checked}>
+            </div>
+        HTML;
+    }
+
+    private function productActions(Product $item): string
+    {
+        return <<<HTML
+        <div class="d-flex gap-2">
+            <a href="{$this->editRoute($item)}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
+            <button onclick="deleteProduct({$item->id})" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+        </div>
+        HTML;
+    }
+
+    private function trashActions(Product $item): string
+    {
+        return <<<HTML
+        <button class="btn btn-sm btn-success" onclick="restoreProduct({$item->id})">
+            <i class="mdi mdi-restore"></i> Restore
+        </button>
+        <button class="btn btn-sm btn-danger" onclick="forceDeleteProduct({$item->id})">
+            <i class="mdi mdi-delete-forever"></i> Delete
+        </button>
+        HTML;
+    }
+
+    private function editRoute(Product $item): string
+    {
+        return route('admin.products.edit', $item->id);
+    }
+
+    private function jsonResponse(string $status, string $message)
+    {
+        if (request()->ajax()) {
+            return response()->json(['status' => $status, 'message' => $message]);
+        }
+
+        return redirect()->back()->with($status, $message);
+    }
 }

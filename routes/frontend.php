@@ -15,7 +15,7 @@ Route::group([
 ], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/product/{slug}', [HomeController::class, 'showProduct'])->name('product.show');
-    Route::get('/all-products', [HomeController::class, 'allProducts'])->name('all-products');
+    Route::get('/products', [HomeController::class, 'getAllProducts'])->name('products');
     Route::get('/policy', [HomeController::class, 'policy'])->name('policy');
     Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

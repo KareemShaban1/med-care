@@ -1,134 +1,153 @@
 <?php
+
 namespace App\Repository\Admin;
 
 use App\Models\ActivityLog;
-use App\Repository\Admin\ActivityLogRepositoryInterface;
 use Yajra\DataTables\Facades\DataTables;
 
 class ActivityLogRepository implements ActivityLogRepositoryInterface
 {
     public function index()
     {
-        return view('backend.pages.activity-logs.index');
+        return [];
     }
 
     public function data($request)
     {
-        $query = ActivityLog::class::with('user');
+        $query = ActivityLog::with('user');
 
-        // Filter by Action
-        if ($request->has('action') && !empty($request->action)) {
+        $query = $this->applyFilters($query, $request);
+
+        return DataTables::of($query)
+            ->editColumn('created_at', fn($item) => $item->created_at->format('Y-m-d H:i:s'))
+            ->editColumn('action', fn($item) => $this->translateAction($item->action))
+            ->editColumn('model', fn($item) => $this->translateModel($item->model))
+            ->editColumn('changes', fn($item) => $this->formatChanges($item))
+            ->rawColumns(['changes'])
+            ->make(true);
+    }
+
+    /**
+     * Apply filters to the query
+     */
+    private function applyFilters($query, $request)
+    {
+        if ($request->filled('action')) {
             $query->where('action', $request->action);
         }
 
-        // Filter by Model
-        if ($request->has('model') && !empty($request->model)) {
+        if ($request->filled('model')) {
             $query->where('model', $request->model);
         }
 
-        // Filter by User
-        if ($request->has('user') && !empty($request->user)) {
+        if ($request->filled('user')) {
             $query->where('user_id', $request->user);
         }
 
-        // Filter by Date Range
-        if ($request->has('date_range') && !empty($request->date_range)) {
-            [$startDate, $endDate] = explode(' - ', $request->date_range);
-            $query->whereBetween('created_at', [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+        if ($request->filled('date_range')) {
+            [$start, $end] = explode(' - ', $request->date_range);
+            $query->whereBetween('created_at', ["{$start} 00:00:00", "{$end} 23:59:59"]);
         }
 
-        return DataTables::of($query)
-            ->filterColumn('model_id', function ($query, $value) {
-                $query->where('model_id', $value);
-            })
-            ->editColumn('created_at', function ($item) {
-                return $item->created_at->format('Y-m-d H:i:s');
-            })
-            ->editColumn('action', function ($item) {
-                return match ($item->action) {
-                    'created' => __('created'),
-                    'updated' => __('updated'),
-                    'deleted' => __('deleted'),
-                    default => __('Unknown'),
-                };
-            })
-            ->editColumn('model', function ($item) {
-                return match ($item->model) {
-                    'App\Models\Banner' => __('Banner'),
-                    'App\Models\Category' => __('Category'),
-                    'App\Models\Product' => __('Product'),
-                    'App\Models\Order' => __('Order'),
+        return $query;
+    }
 
-                    default => $item->model, // Fallback for unexpected values
-                };
-            })
-            ->editColumn('changes', function ($item) {
-                if (!$item->changes) {
-                    return __('N/A');
+    /**
+     * Translate action for display
+     */
+    private function translateAction(string $action): string
+    {
+        return match ($action) {
+            'created' => __('Created'),
+            'updated' => __('Updated'),
+            'deleted' => __('Deleted'),
+            default => __('Unknown'),
+        };
+    }
+
+    /**
+     * Translate model for display
+     */
+    private function translateModel(string $model): string
+    {
+        return match ($model) {
+            'App\Models\Banner' => __('Banner'),
+            'App\Models\Category' => __('Category'),
+            'App\Models\Product' => __('Product'),
+            'App\Models\Order' => __('Order'),
+            'App\Models\Client' => __('Client'),
+            default => class_basename($model),
+        };
+    }
+
+    /**
+     * Format changes JSON for display
+     */
+    private function formatChanges($item): string
+    {
+        if (!$item->changes) {
+            return __('N/A');
+        }
+
+        try {
+            $changes = json_decode($item->changes, true);
+            if (!is_array($changes)) return __('Invalid Data');
+
+            $output = '<ul>';
+            foreach ($changes as $key => $value) {
+                if ($key === 'updated_at') continue;
+
+                $translatedKey = $this->translateField($key);
+
+                if (is_array($value) && isset($value['from'], $value['to'])) {
+                    [$from, $to] = [$value['from'], $value['to']];
+                    [$from, $to] = $this->translateFieldValues($item->model, $key, $from, $to);
+                    $output .= "<li><strong>{$translatedKey}:</strong> {$from} <--- {$to}</li>";
+                } else {
+                    $output .= "<li><strong>{$translatedKey}:</strong> {$value}</li>";
                 }
-            
-                try {
-                    $parsedChanges = json_decode($item->changes, true);
-                    if (!is_array($parsedChanges)) {
-                        return __('Invalid Data');
-                    }
-            
-                    $changesList = '<ul>';
-                    foreach ($parsedChanges as $key => $value) {
-                        if ($key === 'updated_at') {
-                            continue; // Skip 'updated_at'
-                        }
-            
-                        $translatedKey = match ($key) {
-                            'address' => __('Address'),
-                            'name'    => __('Name'),
-                            'email'   => __('Email'),
-                            'date'    => __('Date'),
-                            'title'   => __('Title'),
-                            'status'  => __('Status'),
-                            'stock'   => __('Stock'),
-                            default   => ucfirst(str_replace('_', ' ', $key)),
-                        };
-            
-                        // Handle nested "from" and "to"
-                        if (is_array($value) && isset($value['from'], $value['to'])) {
-                            $from = $value['from'];
-                            $to   = $value['to'];
-            
-                            // Special case for Product status translation
-                            if ($item->model === 'App\Models\Product' && $key === 'status') {
-                                $from = match ($from) {
-                                    'pending'    => __('Pending'),
-                                    'processing' => __('Processing'),
-                                    'completed'  => __('Completed'),
-                                    'cancelled'  => __('Cancelled'),
-                                    default      => $from,
-                                };
-            
-                                $to = match ($to) {
-                                    'pending'    => __('Pending'),
-                                    'processing' => __('Processing'),
-                                    'completed'  => __('Completed'),
-                                    'cancelled'  => __('Cancelled'),
-                                    default      => $to,
-                                };
-                            }
-            
-                            $changesList .= "<li><strong>{$translatedKey}:</strong> {$from} <--- {$to}</li>";
-                        } else {
-                            // Fallback for non-array values
-                            $changesList .= "<li><strong>{$translatedKey}:</strong> {$value}</li>";
-                        }
-                    }
-                    $changesList .= '</ul>';
-            
-                    return $changesList;
-                } catch (\Exception $e) {
-                    return __('Invalid JSON');
-                }
-            })
-            
-            ->rawColumns(['changes'])
-            ->make(true);
+            }
+            $output .= '</ul>';
+
+            return $output;
+        } catch (\Throwable $e) {
+            return __('Invalid JSON');
+        }
+    }
+
+    /**
+     * Translate field names
+     */
+    private function translateField(string $field): string
+    {
+        return match ($field) {
+            'address' => __('Address'),
+            'name' => __('Name'),
+            'email' => __('Email'),
+            'date' => __('Date'),
+            'title' => __('Title'),
+            'status' => __('Status'),
+            'stock' => __('Stock'),
+            default => ucfirst(str_replace('_', ' ', $field)),
+        };
+    }
+
+    /**
+     * Translate specific field values (like status)
+     */
+    private function translateFieldValues(string $model, string $field, $from, $to): array
+    {
+        if ($model === 'App\Models\Product' && $field === 'status') {
+            $statuses = [
+                'pending' => __('Pending'),
+                'processing' => __('Processing'),
+                'completed' => __('Completed'),
+                'cancelled' => __('Cancelled'),
+            ];
+            $from = $statuses[$from] ?? $from;
+            $to = $statuses[$to] ?? $to;
+        }
+
+        return [$from, $to];
     }
 }

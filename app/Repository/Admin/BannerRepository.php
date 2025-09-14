@@ -3,203 +3,252 @@
 namespace App\Repository\Admin;
 
 use App\Models\Banner;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class BannerRepository implements BannerRepositoryInterface
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the banners.
      */
     public function index()
     {
-        $banners = Banner::all();
-
-
-        return view('backend.pages.banners.index', compact('banners'));
+        return [];
     }
 
+    /**
+     * Get banners data
+     */
     public function data()
     {
         $banners = Banner::query();
-        return datatables()->of($banners)
-            ->editColumn('image', function ($item) {
-                return '<img src="' . $item->getImageUrlAttribute() . '" class="img-fluid" style="max-width: 100px;">';
-            })
-            ->editColumn('status', function ($item) {
-                $checked = $item->status ? 'checked' : '';
-                return '
-                <div class="form-check form-switch mt-2">
-                    <input type="hidden" name="status" value="0">
-                    <input type="checkbox" class="form-check-input toggle-boolean" 
-                           data-id="' . $item->id . '" 
-                           data-field="status" 
-                           id="status-' . $item->id . '" 
-                           name="status" value="1" ' . $checked . '>
-                </div>';
-            })
-            ->addColumn('action', function ($item) {
-                $btn = '<div class="d-flex gap-2">';
-                $btn .= '<button onclick="editBanner(' . $item->id . ')" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></button>';
-                $btn .= '<button onclick="deleteBanner(' . $item->id . ')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>';
-                $btn .= '</div>';
-                return $btn;
-            })
-            ->rawColumns(['status', 'action', 'image'])
+
+        return DataTables::of($banners)
+            ->editColumn('image', fn($item) => $this->bannerImage($item))
+            ->editColumn('status', fn($item) => $this->bannerStatus($item))
+            ->addColumn('action', fn($item) => $this->bannerActions($item))
+            ->rawColumns(['image', 'status', 'action'])
             ->make(true);
     }
 
-
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created banner.
      */
     public function store($request)
     {
-        try {
-            $banner = Banner::create($request->validated());
-
-            if ($request->hasFile('image')) {
-                $banner->addMedia($request->file('image'))->toMediaCollection('banners');
-            }
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'status'  => 'success',
-                    'message' => __('Banner created successfully'),
-                ]);
-            }
-
-            return redirect()->route('admin.banners.index')->with('success', 'Banner created successfully');
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ]);
-        }
+        return $this->saveBanner(new Banner(), $request, 'created');
     }
 
     /**
-     * Display the specified resource.
+     * Display the banner.
      */
-    public function show($banner)
+    public function show($id)
     {
-        return response()->json([
-            'id' => $banner->id,
-            'title' => $banner->title,
-            'url' => $banner->url,
-            'type' => $banner->type,
-            'status' => $banner->status,
-            'image' => $banner->image_url ? $banner->image_url : null,
-        ]);
+        return Banner::findOrFail($id);
     }
 
-
+    /**
+     * Update banner.
+     */
+    public function update($request, $id)
+    {
+        $banner = Banner::findOrFail($id);
+        return $this->saveBanner($banner, $request, 'updated');
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update($request, $banner)
-    {
-
-        try {
-            $banner->update($request->validated());
-
-            if ($request->hasFile('image')) {
-                $banner->clearMediaCollection('banners');
-                $banner->addMedia($request->file('image'))->toMediaCollection('banners');
-            }
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'status'  => 'success',
-                    'message' => __('Banner updated successfully'),
-                ]);
-            }
-
-            return redirect()->route('admin.banners.index')->with('success', 'Banner updated successfully');
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ]);
-        }
-    }
-
     public function updateStatus($request)
     {
         $banner = Banner::findOrFail($request->id);
-        $banner->status = $request->status;
+        $banner->status = (bool)$request->status;
         $banner->save();
-        return response()->json([
-            'status'  => 'success',
-            'message' => __('Banner status updated successfully'),
-        ]);
+
+        return $this->jsonResponse('success', __('Banner status updated successfully'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified banner from storage.
      */
-    public function destroy($banner)
+    public function destroy($id)
     {
+        $banner = Banner::findOrFail($id);
         $banner->delete();
-        if (request()->ajax()) {
-            return response()->json([
-                'status'  => 'success',
-                'message' => __('banner deleted successfully'),
-            ]);
-        }
-        return redirect()->route('admin.banners.index')->with('success', 'banner deleted successfully');
+
+        return $this->jsonResponse('success', __('Banner deleted successfully'));
     }
+
+    /**
+     * Display a listing of the trashed banners.
+     */
     public function trash()
     {
-        return view('backend.pages.banners.trash');
+        return [];
     }
-    
+
+    /**
+     * Get trashed banners data
+     */
     public function trashData()
     {
         $banners = Banner::onlyTrashed();
-    
-        return datatables()->of($banners)
-            ->addColumn('image', function ($banner) {
-                return $banner->image_url 
-                    ? '<img src="'.$banner->image_url.'" class="img-fluid rounded" style="max-height:50px;">'
-                    : '';
-            })
-            ->addColumn('status', function ($banner) {
-                return '<span class="badge bg-secondary">Trashed</span>';
-            })
-            ->addColumn('action', function ($banner) {
-                return '
-                    <button class="btn btn-sm btn-success" onclick="restoreBanner('.$banner->id.')">
-                        <i class="mdi mdi-restore"></i> Restore
-                    </button>
-                    <button class="btn btn-sm btn-danger" onclick="forceDeleteBanner('.$banner->id.')">
-                        <i class="mdi mdi-delete-forever"></i> Delete
-                    </button>
-                ';
-            })
+
+        return DataTables::of($banners)
+            ->addColumn('image', fn($item) => $item->image_url ? '<img src="'.$item->image_url.'" class="img-fluid rounded" style="max-height:50px;">' : '')
+            ->addColumn('status', fn() => '<span class="badge bg-secondary">Trashed</span>')
+            ->addColumn('action', fn($item) => $this->trashActions($item))
             ->rawColumns(['image', 'status', 'action'])
             ->make(true);
     }
-    
 
+    /**
+     * Restore the specified banner from storage.
+     */
     public function restore($id)
     {
         $banner = Banner::onlyTrashed()->findOrFail($id);
         $banner->restore();
-        return redirect()->route('admin.banners.index')->with('success', 'Banner restored successfully');
+
+        return redirect()->route('admin.banners.index')->with('success', __('Banner restored successfully'));
     }
 
+    /**
+     * Force delete the specified banner from storage.
+     */
     public function forceDelete($id)
     {
         $banner = Banner::onlyTrashed()->findOrFail($id);
-        $banner->clearMediaCollection('banners');
+        $this->deleteMedia($banner);
         $banner->forceDelete();
 
+        return $this->jsonResponse('success', __('Banner permanently deleted successfully'));
+    }
+
+
+
+    /** ---------------------- PRIVATE HELPERS ---------------------- */
+
+    /**
+     * Save the banner.
+     * steps:
+     * 1. fill the banner
+     * 2. handle media
+     * 3. save the banner
+     */
+
+    private function saveBanner(Banner $banner, $request, string $action)
+    {
+        try {
+            $banner->fill($request->validated())->save();
+            $this->handleMedia($banner, $request);
+
+            if ($request->ajax()) {
+                return $this->jsonResponse('success', __('Banner '.$action.' successfully'));
+            }
+
+            return redirect()->route('admin.banners.index')->with('success', __('Banner '.$action.' successfully'));
+        } catch (\Throwable $e) {
+            return $this->jsonResponse('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Handle the media.
+     * steps:
+     * 1. delete the media if exists
+     * 2. add the media
+     */
+    private function handleMedia(Banner $banner, $request)
+    {
+        if ($request->hasFile('image')) {
+            $this->deleteMedia($banner);
+            $banner->addMedia($request->file('image'))->toMediaCollection('banners');
+        }
+    }
+
+    /**
+     * Delete the media.
+     * steps:
+     * 1. delete the media if exists
+     */
+    private function deleteMedia(Banner $banner)
+    {
+        if ($banner->hasMedia('banners')) {
+            $banner->clearMediaCollection('banners');
+        }
+    }
+
+    /**
+     * Get the banner image.
+     * steps:
+     * 1. return the image if exists
+     */
+    private function bannerImage(Banner $item): string
+    {
+        return '<img src="' . $item->image_url . '" class="img-fluid" style="max-width:100px;">';
+    }
+
+    /**
+     * Get the banner status.
+     * steps:
+     * 1. return the status if exists
+     */
+    private function bannerStatus(Banner $item): string
+    {
+        $checked = $item->status ? 'checked' : '';
+        return <<<HTML
+            <div class="form-check form-switch mt-2">
+                <input type="hidden" name="status" value="0">
+                <input type="checkbox" class="form-check-input toggle-boolean"
+                       data-id="{$item->id}" data-field="status" id="status-{$item->id}"
+                       name="status" value="1" {$checked}>
+            </div>
+        HTML;
+    }
+
+    /**
+     * Get the banner actions.
+     * steps:
+     * 1. return the actions if exists
+     */
+    private function bannerActions(Banner $item): string
+    {
+        return <<<HTML
+        <div class="d-flex gap-2">
+            <button onclick="editBanner({$item->id})" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></button>
+            <button onclick="deleteBanner({$item->id})" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+        </div>
+        HTML;
+    }
+
+    private function trashActions(Banner $item): string
+    {
+        return <<<HTML
+        <button class="btn btn-sm btn-success" onclick="restoreBanner({$item->id})">
+            <i class="mdi mdi-restore"></i> Restore
+        </button>
+        <button class="btn btn-sm btn-danger" onclick="forceDeleteBanner({$item->id})">
+            <i class="mdi mdi-delete-forever"></i> Delete
+        </button>
+        HTML;
+    }
+
+    /**
+     * Get the json response.
+     * steps:
+     * 1. return the json response if ajax request
+     * 2. return the redirect response if not ajax request
+     */
+    private function jsonResponse(string $status, string $message)
+    {
         if (request()->ajax()) {
             return response()->json([
-                'status'  => 'success',
-                'message' => __('Banner deleted successfully'),
+                'status' => $status,
+                'message' => $message,
             ]);
         }
-        return redirect()->route('admin.banners.index')->with('success', 'Banner deleted successfully');
+
+        return redirect()->back()->with($status, $message);
     }
 }

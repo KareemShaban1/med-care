@@ -16,24 +16,36 @@ class CheckoutController extends Controller
 {
     //
 
-    protected $checkoutRepositoryInterface;
+    protected $checkoutRepo;
 
-    public function __construct(CheckoutRepositoryInterface $checkoutRepositoryInterface)
+    public function __construct(CheckoutRepositoryInterface $checkoutRepo)
     {
-        $this->checkoutRepositoryInterface = $checkoutRepositoryInterface;
+        $this->checkoutRepo = $checkoutRepo;
     }
     public function show()
     {
-        return $this->checkoutRepositoryInterface->show();
+        $data = $this->checkoutRepo->getCheckoutData();
+
+        if (isset($data['redirect'])) {
+            return redirect($data['redirect'])->with('info', $data['message']);
+        }
+
+        return view('frontend.pages.checkout', $data);
     }
 
     public function process(ProcessCheckoutRequest $request)
     {
-        return $this->checkoutRepositoryInterface->process($request);
+        try {
+            $uuid = $this->checkoutRepo->processCheckout($request->validated());
+            return redirect()->route('order.confirmation', $uuid);
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('toast_error', $e->getMessage());
+        }
     }
 
-    public function confirmation($orderId)
+    public function confirmation($uuid)
     {
-        return $this->checkoutRepositoryInterface->confirmation($orderId);
+        $order = $this->checkoutRepo->getOrderConfirmation($uuid);
+        return view('frontend.pages.order_confirmation', compact('order'));
     }
 }

@@ -8,31 +8,36 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    protected CartRepositoryInterface $cartRepo;
 
-    protected $cartRepositoryInterface;
-
-    public function __construct(CartRepositoryInterface $cartRepositoryInterface)
+    public function __construct(CartRepositoryInterface $cartRepo)
     {
-        $this->cartRepositoryInterface = $cartRepositoryInterface;
+        $this->cartRepo = $cartRepo;
     }
 
     public function add(Request $request, $id)
     {
-        return $this->cartRepositoryInterface->add($request, $id);
+        $response = $this->cartRepo->add($request, $id);
+
+        return redirect()->back()->with(
+            $response['success'] ? 'toast_success' : 'toast_error',
+            $response['message']
+        );
     }
 
     public function index()
     {
-        return $this->cartRepositoryInterface->index();
+        $data = $this->cartRepo->index();
+        return view('frontend.pages.cart', $data);
     }
 
     public function update(Request $request, $id)
     {
-        return $this->cartRepositoryInterface->update($request, $id);
+        return response()->json($this->cartRepo->update($request, $id));
     }
 
     public function remove($id)
     {
-        return $this->cartRepositoryInterface->remove($id);
+        return response()->json($this->cartRepo->remove($id));
     }
 }

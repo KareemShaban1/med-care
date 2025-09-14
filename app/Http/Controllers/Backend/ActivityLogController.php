@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\ActivityLog;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
 use App\Repository\Admin\ActivityLogRepositoryInterface;
 
@@ -12,21 +10,21 @@ class ActivityLogController extends Controller
 {
 
 
-    protected $activityLogRepositoryInterface;
+    protected $activityLogRepo;
 
-    public function __construct(ActivityLogRepositoryInterface $activityLogRepositoryInterface)
+    public function __construct(ActivityLogRepositoryInterface $activityLogRepo)
     {
-        $this->activityLogRepositoryInterface = $activityLogRepositoryInterface;
+        $this->activityLogRepo = $activityLogRepo;
     }
 
     public function index()
     {
-        return $this->activityLogRepositoryInterface->index();
+        return view('backend.pages.activity-logs.index');
     }
 
     public function data(Request $request)
     {
-        return $this->activityLogRepositoryInterface->data($request);
+        return $this->activityLogRepo->data($request);
     }
 
    

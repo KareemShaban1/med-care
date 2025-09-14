@@ -106,7 +106,7 @@
                     <div class="position-absolute top-50 start-50 translate-middle text-center text-white p-3" style="background: rgba(0,0,0,0.4); border-radius: 8px;">
                         <h3 class="fw-bold">{{ $banner->title }}</h3>
                         <p class="mb-3">{{ $banner->description ?? 'banner description goes here.' }}</p>
-                        <a href="{{ $banner->url }}" class="btn btn-primary">
+                        <a href="{{ $banner->url }}" class="btn btn-success">
                             {{ __('Shop Now') }}
                         </a>
                     </div>

@@ -13,7 +13,7 @@
             <!-- Desktop Navigation -->
             <nav class="d-none d-md-flex gap-3">
                 <a href="{{ route('home') }}" class="nav-link text-dark text-lg">{{ __('Home') }}</a>
-                <a href="{{ route('all-products') }}" class="nav-link text-dark text-lg">{{ __('Products')}}</a>
+                <a href="{{ route('products') }}" class="nav-link text-dark text-lg">{{ __('Products')}}</a>
                 <a href="{{ route('policy') }}" class="nav-link text-dark text-lg">{{ __('Privacy & Policy')}}</a>
                 <a href="{{ route('contact') }}" class="nav-link text-dark text-lg">{{ __('Contact')}}</a>
             </nav>
@@ -107,7 +107,7 @@
         <div id="mobileMenu" class="d-md-none mt-2" style="position: absolute;z-index: 10;width: 95%;left: 2.5%;">
             <nav class="mb-2 d-flex flex-column align-items-center">
                 <a href="{{ route('home') }}" class="nav-link text-dark">{{ __('Home') }}</a>
-                <a href="{{ route('all-products') }}" class="nav-link text-dark">{{ __('Products') }}</a>
+                <a href="{{ route('products') }}" class="nav-link text-dark">{{ __('Products') }}</a>
                 <a href="{{ route('policy') }}" class="nav-link text-dark">{{ __('Privacy & Policy') }}</a>
                 <a href="{{ route('contact') }}" class="nav-link text-dark">{{ __('Contact') }}</a>
             </nav>
