@@ -77,7 +77,7 @@
                             : 'bg-green-600 hover:bg-green-700' }}"
                 {{ $product->stock <= 0 ? 'disabled' : '' }}
                 style="{{ $product->stock <= 0 ? 'opacity: 1 !important;' : '' }}">
-                {{ $product->stock <= 0 ? 'Out of Stock' : 'Add to Cart' }}
+                {{ $product->stock <= 0 ? __('Out of Stock') : __('Add To Cart') }}
             </button>
         </form>
     </div>

@@ -17,34 +17,34 @@
 
         {{-- Tabs --}}
         <div class="flex justify-center mb-10 space-x-2">
-            <button class="policy-tab px-6 py-2 rounded-t-xl bg-blue-600 text-white font-semibold focus:outline-none" data-tab="privacy">Privacy Policy</button>
-            <button class="policy-tab px-6 py-2 rounded-t-xl bg-gray-100 text-gray-800 font-semibold focus:outline-none" data-tab="terms">Terms & Conditions</button>
+            <button class="policy-tab px-6 py-2 rounded-t-xl bg-blue-600 text-white font-semibold focus:outline-none" data-tab="privacy">{{ __('Privacy Policy') }}</button>
+            <button class="policy-tab px-6 py-2 rounded-t-xl bg-gray-100 text-gray-800 font-semibold focus:outline-none" data-tab="terms">{{ __('Terms & Conditions') }}</button>
         </div>
 
         {{-- Content --}}
         <div id="privacy" class="tab-content space-y-6">
             <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ __('Privacy Policy') }}</h2>
             <p class="text-gray-700 leading-relaxed">
-                At <span class="font-semibold">MediStore</span>, we are committed to protecting your personal and medical information. All your data is handled with strict confidentiality.
+                {{ __('At') }} <span class="font-semibold">{{ __('MediStore') }}</span>, {{ __('we are committed to protecting your personal and medical information. All your data is handled with strict confidentiality.') }}
             </p>
             <ul class="list-disc list-inside text-gray-700 space-y-2">
-                <li><span class="font-semibold">Information Collection:</span> We collect personal details, health data, and purchase history to provide accurate prescriptions and recommendations.</li>
-                <li><span class="font-semibold">Data Usage:</span> Your information helps us personalize your experience and ensure timely delivery of medicines.</li>
-                <li><span class="font-semibold">Data Security:</span> We use advanced encryption and secure servers to safeguard sensitive medical information.</li>
-                <li><span class="font-semibold">Third-Party Sharing:</span> Only with authorized medical partners and delivery services, under strict privacy agreements.</li>
+                <li><span class="font-semibold">{{ __('Information Collection') }}:</span> {{ __('We collect personal details, health data, and purchase history to provide accurate prescriptions and recommendations.') }}</li>
+                <li><span class="font-semibold">{{ __('Data Usage') }}:</span> {{ __('Your information helps us personalize your experience and ensure timely delivery of medicines.') }}</li>
+                <li><span class="font-semibold">{{ __('Data Security') }}:</span> {{ __('We use advanced encryption and secure servers to safeguard sensitive medical information.') }}</li>
+                <li><span class="font-semibold">{{ __('Third-Party Sharing') }}:</span> {{ __('Only with authorized medical partners and delivery services, under strict privacy agreements.') }}</li>
             </ul>
         </div>
 
         <div id="terms" class="tab-content hidden space-y-6">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Terms & Conditions</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ __('Terms & Conditions') }}</h2>
             <p class="text-gray-700 leading-relaxed">
-                By using <span class="font-semibold">MediStore</span>, you agree to the following rules and guidelines for safe and legal use of our platform:
+                {{ __('By using') }} <span class="font-semibold">{{ __('MediStore') }}</span>, {{ __('you agree to the following rules and guidelines for safe and legal use of our platform:') }}
             </p>
             <ul class="list-decimal list-inside text-gray-700 space-y-2">
-                <li>Use the website responsibly for personal or family medical needs.</li>
-                <li>Do not misuse the platform to share or sell prescription medicines illegally.</li>
-                <li>Follow all local laws and regulations regarding medical products.</li>
-                <li>MediStore reserves the right to update terms and policies to comply with healthcare regulations.</li>
+                <li>{{ __('Use the website responsibly for personal or family medical needs.') }}</li>
+                <li>{{ __('Do not misuse the platform to share or sell prescription medicines illegally.') }}</li>
+                <li>{{ __('Follow all local laws and regulations regarding medical products.') }}</li>
+                <li>{{ __('MediStore reserves the right to update terms and policies to comply with healthcare regulations.') }}</li>
             </ul>
         </div>
     </div>

@@ -12,10 +12,15 @@
         <div class="col-span-12 md:col-span-3">
             <div class="bg-white p-4 rounded-xl shadow mb-6">
                 <form id="filtersForm" class="grid grid-cols-1 gap-4">
-                    <div>
+                    <div class="relative flex items-center">
                         <input id="searchInput" name="q" value="{{ request('q') }}"
                             class="form-control block w-full rounded-md border-gray-300"
                             placeholder="{{ __('Search Products') }}" />
+
+                        <span class="ms-2 text-muted" data-bs-toggle="tooltip" title="{{ __('Type product name at least 3 characters to search') }}"
+                        style="position: absolute; left: 0px; top: 50%; transform: translateY(-50%);">
+                            <i class="fa fa-info-circle"></i>
+                        </span>
                     </div>
                     <div>
                         <select name="category" id="categoryFilter"
@@ -32,8 +37,8 @@
                         <select name="sort" id="sortFilter"
                             class="form-select block w-full rounded-md border-gray-300">
                             <option value="">{{ __('Sort') }}</option>
-                            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Price ↑</option>
-                            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Price ↓</option>
+                            <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>{{ __('Price ↓') }}</option>
+                            <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>{{ __('Price ↑') }}</option>
                         </select>
                     </div>
                     <div class="flex gap-2">
@@ -58,7 +63,7 @@
 
 @push('scripts')
 <script>
-      document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const filtersForm = document.getElementById('filtersForm');
         const productsGrid = document.getElementById('productsGrid');
         const searchInput = document.getElementById('searchInput');
@@ -155,12 +160,19 @@
         // initial bind for pagination links on first load
         bindPaginationLinks();
 
-        // handle browser back/forward to reload correct grid (optional)
+        // handle browser back/forward to reload correct grid
         window.addEventListener('popstate', function() {
             // re-load using current location's query params
             const url = new URL(location.href);
             loadProducts(Object.fromEntries(url.searchParams.entries()));
         });
+
+
+        // Tooltip
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     });
 </script>
 @endpush

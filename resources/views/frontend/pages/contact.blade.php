@@ -10,8 +10,8 @@
         {{-- Contact Info --}}
         <div class="bg-white shadow-xl rounded-2xl p-8 space-y-6">
 
-            <h1 class="text-3xl font-bold text-gray-800 mb-4">Contact Us</h1>
-            <p class="text-gray-600">Have a question about your order, prescription, or need support? Reach out to us, and we’ll get back to you promptly.</p>
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ __('Contact Us') }}</h1>
+            <p class="text-gray-600">{{ __('Contact Description') }}</p>
 
             <div class="space-y-4">
                 <div class="flex items-start space-x-4">
@@ -19,8 +19,8 @@
                         <i class="bi bi-geo-alt-fill"></i>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-gray-800">Address</h3>
-                        <p class="text-gray-600">123 Health Street, Cairo, Egypt</p>
+                        <h3 class="font-semibold text-gray-800">{{ __('Address') }}</h3>
+                        <p class="text-gray-600">{{ __('Address Description') }}</p>
                     </div>
                 </div>
 
@@ -29,8 +29,8 @@
                         <i class="bi bi-telephone-fill"></i>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-gray-800">Phone</h3>
-                        <p class="text-gray-600">+20 123 456 789</p>
+                        <h3 class="font-semibold text-gray-800">{{ __('Phone') }}</h3>
+                        <p class="text-gray-600">{{ __('Phone Description') }}</p>
                     </div>
                 </div>
 
@@ -39,8 +39,8 @@
                         <i class="bi bi-envelope-fill"></i>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-gray-800">Email</h3>
-                        <p class="text-gray-600">support@medistore.com</p>
+                        <h3 class="font-semibold text-gray-800">{{ __('Email') }}</h3>
+                        <p class="text-gray-600">{{ __('Email Description') }}</p>
                     </div>
                 </div>
 
@@ -49,8 +49,8 @@
                         <i class="bi bi-clock-fill"></i>
                     </div>
                     <div>
-                        <h3 class="font-semibold text-gray-800">Working Hours</h3>
-                        <p class="text-gray-600">Sun – Fri: 9:00 AM – 6:00 PM</p>
+                        <h3 class="font-semibold text-gray-800">{{ __('Working Hours') }}</h3>
+                        <p class="text-gray-600">{{ __('Working Hours Description') }}</p>
                     </div>
                 </div>
             </div>
@@ -62,32 +62,32 @@
         {{-- Contact Form --}}
         <div class="bg-white shadow-xl rounded-2xl p-8">
 
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">{{ __('Send Us a Message') }}</h2>
             <form action="" method="POST" class="space-y-4">
                 @csrf
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1" for="name">Name</label>
+                    <label class="block text-gray-700 font-medium mb-1" for="name">{{ __('Name') }}</label>
                     <input type="text" name="name" id="name" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1" for="email">Email</label>
+                    <label class="block text-gray-700 font-medium mb-1" for="email">{{ __('Email') }}</label>
                     <input type="email" name="email" id="email" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1" for="subject">Subject</label>
+                    <label class="block text-gray-700 font-medium mb-1" for="subject">{{ __('Subject') }}</label>
                     <input type="text" name="subject" id="subject"
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-gray-700 font-medium mb-1" for="message">Message</label>
+                    <label class="block text-gray-700 font-medium mb-1" for="message">{{ __('Message') }}</label>
                     <textarea name="message" id="message" rows="5" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
                 </div>
                 <button type="submit"
                     class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition duration-300">
-                    Send Message
+                    {{ __('Send Message') }}
                 </button>
             </form>
         </div>
