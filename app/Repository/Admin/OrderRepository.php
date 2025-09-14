@@ -58,6 +58,8 @@ class OrderRepository implements OrderRepositoryInterface
             'delivery_address' => $order->delivery_address,
             'status' => $order->status,
             'total' => $order->total,
+            'created_at' => $order->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $order->updated_at->format('Y-m-d H:i:s'),
             'orderItems' => $order->orderItems->map(fn($item) => [
                 'product' => $item->product->name ?? 'N/A',
                 'quantity' => $item->quantity,

@@ -40,6 +40,8 @@
                 <p><strong>{{ __('Delivery Address') }}:</strong> <span id="modalAddress"></span></p>
                 <p><strong>{{ __('Status') }}:</strong> <span id="modalStatus"></span></p>
                 <p><strong>{{ __('Total') }}:</strong> <span id="modalTotal"></span></p>
+                <p><strong>{{ __('Created Time') }}:</strong> <span id="modalCreatedAt"></span></p>
+                <p><strong>{{ __('Updated Time') }}:</strong> <span id="modalUpdatedAt"></span></p>
 
                 <h6>{{ __('Items') }}</h6>
                 <table class="table table-sm table-bordered mt-4">
@@ -171,6 +173,8 @@
             $('#modalCustomer').text(order.customer_name);
             $('#modalPhone').text(order.customer_phone);
             $('#modalAddress').text(order.delivery_address);
+            $('#modalCreatedAt').text(order.created_at);
+            $('#modalUpdatedAt').text(order.updated_at);
             let status = order.status;
             if (status == 'pending') {
                 $('#modalStatus').html("<span class='badge bg-warning'>{{ __('Pending') }}</span>");
