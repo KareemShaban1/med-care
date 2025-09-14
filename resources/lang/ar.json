@@ -167,6 +167,10 @@
     "Shop Now": "تسوق الآن",
     "Price ↑": "الأعلى سعراً",
     "Price ↓": "الأقل سعراً",
-    "Type product name at least 3 characters to search": "أدخل اسم المنتج على الأقل 3 حروف للبحث"
+    "Type product name at least 3 characters to search": "أدخل اسم المنتج على الأقل 3 حروف للبحث",
+    "sold": "المبيعات",
+    "total": "المجموع",
+    "left": "الباقي",
+    "from": "من"
 
    }
