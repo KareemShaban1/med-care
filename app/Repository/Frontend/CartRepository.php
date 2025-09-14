@@ -70,7 +70,7 @@ class CartRepository implements CartRepositoryInterface
 
         $this->saveCart($cart);
 
-        return ['success' => true, 'message' => 'Added to cart', 'cart' => $cart];
+        return ['success' => true, 'message' => __('Added to cart'), 'cart' => $cart];
     }
 
     /**

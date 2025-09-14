@@ -28,45 +28,18 @@
         </span>
         @endif
 
-        {{-- Quick View Button --}}
-        <a href="{{ route('product.show', $product->slug) }}"
-            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 
-                  flex items-center justify-center transition duration-300">
-            <span class="px-3 py-2 bg-white text-sm rounded-lg shadow hover:bg-gray-100">
-                {{ __('View Details') }}
-            </span>
-        </a>
+
     </div>
 
     {{-- Product Info --}}
     <div class="pt-4 flex flex-col space-y-2">
-        <h6 class="font-semibold text-gray-800 truncate">{{ $product->name }}</h6>
+        <a href="{{ route('product.show', $product->slug) }}" class="text-decoration-none text-gray-800">
+            <h6 class="font-semibold text-gray-800 truncate">{{ $product->name }}</h6>
+        </a>
         <p class="text-xs text-gray-500">
             <span class="font-semibold text-gray-800">{{ __('Category') }}</span>:
             <span class="text-gray-800 text-xs">{{ $product->category->name ?? '-' }}</span>
         </p>
-        @php
-        $maxStock = max($product->stock, 1); // prevent division by zero
-        $sold = rand(0, $maxStock); // example if you track sold separately
-        $remaining = $product->stock;
-        $progress = ($remaining / ($remaining + $sold)) * 100;
-        @endphp
-
-        <div class="w-full mt-2">
-            <div class="flex justify-between items-center text-xs mb-1">
-                <span class="font-semibold text-gray-800">{{ __('Stock') }}</span>
-                <span class="text-gray-600"> {{ __('left') }} {{ $remaining }} {{ __('from') }} {{ $remaining + $sold }}</span>
-            </div>
-
-            <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                <div class="bg-green-500 h-2 rounded-full transition-all duration-500"
-                    style="width: {{ $progress }}%"></div>
-            </div>
-
-            <!-- <p class="text-[11px] mt-1 text-gray-500">
-                {{ $sold }} {{ __('sold') }} / {{ $remaining + $sold }} {{ __('total') }}
-            </p> -->
-        </div>
 
 
         {{-- Prices --}}
