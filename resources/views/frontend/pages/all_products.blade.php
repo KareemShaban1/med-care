@@ -17,8 +17,7 @@
                             class="form-control block w-full rounded-md border-gray-300"
                             placeholder="{{ __('Search Products') }}" />
 
-                        <span class="ms-2 text-muted" data-bs-toggle="tooltip" title="{{ __('Type product name at least 3 characters to search') }}"
-                        style="position: absolute; left: 0px; top: 50%; transform: translateY(-50%);">
+                        <span class="ms-2 text-muted info-tooltip" data-bs-toggle="tooltip" title="{{ __('Type product name at least 3 characters to search') }}">
                             <i class="fa fa-info-circle"></i>
                         </span>
                     </div>

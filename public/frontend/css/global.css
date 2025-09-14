@@ -69,17 +69,4 @@
             }
         }
 
-        .cart-menu {
-            width: 350px !important;   
-            left: -10px !important;
-            direction: ltr !important;
-        }
-
-        @media (min-width: 992px) {
-
-            /* lg and above */
-            .cart-menu {
-                width: 400px !important;
-                direction: ltr !important;
-            }
-        }
+      

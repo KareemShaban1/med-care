@@ -16,3 +16,26 @@ html[dir="ltr"] .cart-badge { left: 40px !important; right: auto !important; }
 .dropdown-toggle::after {
     display: none !important;
 }
+
+.info-tooltip {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+.cart-menu {
+    width: 350px !important;   
+    right: -10px !important;
+    direction: ltr !important;
+}
+
+@media (min-width: 992px) {
+
+    /* lg and above */
+    .cart-menu {
+        width: 400px !important;
+        direction: ltr !important;
+    }
+}
