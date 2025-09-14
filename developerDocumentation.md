@@ -1,3 +1,7 @@
+### 🛠 Developer Documentation
+
+This project follows clean architecture principles with the Repository Pattern, making it modular, testable, and easy to extend.
+
 ### Project Structure
 
 ```

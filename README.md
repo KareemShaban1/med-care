@@ -117,8 +117,11 @@ Visit `http://localhost:8000` in your browser to access the application.
 
 ## 🔐 Default Admin Credentials
 
-- **Email:** admin@example.com
+- visit `http://localhost:8000/login` to access the admin panel
+
+- **Email:** super_admin@admin.com
 - **Password:** password
+
 
 
 ## 🔧 Built With
