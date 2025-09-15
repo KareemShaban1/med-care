@@ -92,7 +92,7 @@
         buttons: [{
                 extend: 'print',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 2, 3, 4, 5, 6]
                 }
             },
             {
@@ -100,13 +100,13 @@
                 text: 'Excel',
                 title: 'Products Data',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 2, 3, 4, 5, 6]
                 }
             },
             {
                 extend: 'copy',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 2, 3, 4, 5, 6]
                 }
             },
         ],

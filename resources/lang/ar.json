@@ -175,6 +175,14 @@
     "Added to cart": "تم إضافة المنتج إلى السلة",
     "View Cart": "عرض السلة",
     "Created Time": "وقت الإنشاء",
-    "Updated Time": "وقت التحديث"
+    "Updated Time": "وقت التحديث",
+    "Product Type": "نوع المنتج",
+    "Normal": "عادي",
+    "Best Seller": "أفضل بائع",
+    "New Arrival": "جديد",
+    "Popular": "شائع",
+    "Top Rated": "أعلى تقييم",
+    "Choose From List": "اختر من القائمة"
+    
 
    }

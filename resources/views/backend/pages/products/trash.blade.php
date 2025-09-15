@@ -49,7 +49,11 @@ $(function () {
         ],
         order: [[3, 'desc']],
         dom: '<"d-flex justify-content-between align-items-center mb-3"lfB>rtip',
-        buttons: ['print', 'excel', 'copy'],
+        buttons: [
+            { extend: 'print', exportOptions: { columns: [0, 1, 2, 3] } },
+            { extend: 'excel', text: 'Excel', title: 'Products Data', exportOptions: { columns: [0, 1, 2, 3] } },
+            { extend: 'copy', exportOptions: { columns: [0, 1, 2, 3] } },
+        ],
         responsive: true,
         language: languages[language],
         drawCallback: function() {

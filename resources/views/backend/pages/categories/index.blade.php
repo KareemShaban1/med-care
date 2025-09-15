@@ -78,8 +78,7 @@
 <script>
     let table = $('#categories-table').DataTable({
         ajax: '{{ route("admin.categories.data") }}',
-        columns: [
-            {
+        columns: [{
                 data: 'id',
                 name: 'id'
             },
@@ -109,21 +108,21 @@
         buttons: [{
                 extend: 'print',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 1, 2]
                 }
             },
             {
                 extend: 'excel',
                 text: 'Excel',
-                title: 'Advertisements Data',
+                title: 'Categories Data',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 1, 2]
                 }
             },
             {
                 extend: 'copy',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 1, 2]
                 }
             },
         ],
@@ -163,16 +162,31 @@
             },
             error: function(xhr) {
                 if (xhr.status === 422) {
-                    let errors = xhr.responseJSON.errors;
-                    let errorMessages = Object.values(errors).map(function(error) {
-                        return error[0];
-                    }).join('<br>');
-
+                    let errors = xhr.responseJSON.errors || {};
+                    // show inline feedback and aggregated alert
+                    let messages = [];
+                    Object.keys(errors).forEach(function(key) {
+                        messages.push(errors[key][0]);
+                        // find input (supports nested names like items[0][price])
+                        let nameSelector = '[name="' + key + '"]';
+                        let $input = $(nameSelector);
+                        // fallback for inputs using array syntax:
+                        if (!$input.length) {
+                            // try ends-with matching
+                            $input = $('#categoriesForm').find('[name^="' + key + '"], [name$="' + key + '"]');
+                        }
+                        if ($input.length) {
+                            $input.addClass('is-invalid');
+                            $input.next('.invalid-feedback').text(errors[key][0]);
+                        }
+                    });
                     Swal.fire({
                         icon: 'error',
                         title: 'Validation Errors',
-                        html: errorMessages
+                        html: messages.join('<br>')
                     });
+                } else {
+                    Swal.fire('Error', 'Something went wrong', 'error');
                 }
             }
         });
@@ -189,7 +203,7 @@
             $('#categoriesModal').modal('show');
         });
     }
-   
+
 
     // Delete
     function deleteCategory(id) {

@@ -109,6 +109,27 @@
         pageLength: 10,
         responsive: true,
         language: languages[language],
+        buttons: [{
+                extend: 'print',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6]
+                }
+            },
+            {
+                extend: 'excel',
+                text: 'Excel',
+                title: 'Activity Logs Data',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6]
+                }
+            },
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5, 6]
+                }
+            },
+        ],
         drawCallback: function() {
             $('.dataTables_paginate > .pagination').addClass('pagination-rounded');
         }

@@ -54,6 +54,7 @@
                         <div class="col-12 col-md-6 mb-3">
                             <label for="title" class="form-label">{{ __('Title') }}</label>
                             <input type="text" class="form-control" id="title" name="title">
+
                             <div class="invalid-feedback"></div>
                         </div>
 
@@ -124,9 +125,9 @@
             responsive: true,
             language: languages[language],
             buttons: [
-                { extend: 'print', exportOptions: { columns: ':visible' } },
-                { extend: 'excel', text: 'Excel', title: 'Banners Data', exportOptions: { columns: ':visible' } },
-                { extend: 'copy', exportOptions: { columns: ':visible' } },
+                { extend: 'print', exportOptions: { columns: [0, 1, 2, 4] } },
+                { extend: 'excel', text: 'Excel', title: 'Banners Data', exportOptions: { columns: [0, 1, 2, 4] } },
+                { extend: 'copy', exportOptions: { columns: [0, 1, 2, 4] } },
             ],
             drawCallback: function() {
                 $('.dataTables_paginate > .pagination').addClass('pagination-rounded');

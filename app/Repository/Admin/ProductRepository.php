@@ -57,8 +57,9 @@ class ProductRepository implements ProductRepositoryInterface
         return Product::findOrFail($id);
     }
 
-    public function update($request, $product)
+    public function update($request, $id)
     {
+        $product = Product::findOrFail($id);
         return $this->saveProduct($product, $request, 'updated');
     }
 
@@ -185,10 +186,10 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return <<<HTML
         <button class="btn btn-sm btn-success" onclick="restoreProduct({$item->id})">
-            <i class="mdi mdi-restore"></i> Restore
+            <i class="mdi mdi-restore"></i> {{__('Restore')}}
         </button>
         <button class="btn btn-sm btn-danger" onclick="forceDeleteProduct({$item->id})">
-            <i class="mdi mdi-delete-forever"></i> Delete
+            <i class="mdi mdi-delete-forever"></i> {{__('Delete')}}
         </button>
         HTML;
     }

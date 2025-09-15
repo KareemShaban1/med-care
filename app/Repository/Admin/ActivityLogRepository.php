@@ -61,6 +61,9 @@ class ActivityLogRepository implements ActivityLogRepositoryInterface
             'created' => __('Created'),
             'updated' => __('Updated'),
             'deleted' => __('Deleted'),
+            'restored' => __('Restored'),
+            'forceDeleted' => __('Force Deleted'),
+            'status_updated' => __('Status Updated'),
             default => __('Unknown'),
         };
     }

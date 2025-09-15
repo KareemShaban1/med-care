@@ -109,21 +109,21 @@
         buttons: [{
                 extend: 'print',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 1, 2, 3, 5]
                 }
             },
             {
                 extend: 'excel',
                 text: 'Excel',
-                title: 'Products Data',
+                title: 'Orders Data',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 1, 2, 3, 5]
                 }
             },
             {
                 extend: 'copy',
                 exportOptions: {
-                    columns: ':visible'
+                    columns: [0, 1, 2, 3, 5]
                 }
             },
         ],

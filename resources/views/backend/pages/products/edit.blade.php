@@ -20,7 +20,7 @@ Edit Product
 @section('content')
 <div class="card mt-3 mx-3">
     <div class="card-header">
-        <h4>Edit Product</h4>
+        <h4>{{ __('Edit Product') }}</h4>
     </div>
 
     <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
@@ -31,16 +31,19 @@ Edit Product
 
             <div class="form-group row mb-5">
                 <label class="col-form-label  col-12 col-md-4 col-lg-3">
-                    Category
+                    {{ __('Category') }}
                 </label>
                 <div class="col-sm-12 col-md-8">
-                    <select name="category_id" class="form-control">
-                        <option value="" disabled selected>Choose From List</option>
+                    <select name="category_id" class="form-control @error('category_id') is-invalid @enderror">
+                        <option value="" disabled selected>{{ __('Choose From List') }}</option>
                         @foreach ($categories as $category)
                         <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}
                         </option>
                         @endforeach
                     </select>
+                    @error('category_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
@@ -48,12 +51,15 @@ Edit Product
                 <div class="col-md-12">
                     <div class="row">
                         <label class="col-form-label col-12 col-md-4 col-lg-3">
-                            Product Name
+                            {{ __('Product Name') }}
                         </label>
                         <div class="col-sm-12 col-md-8">
-                            <input type="text" name="name" class="form-control"
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
                                 value="{{ $product->name }}"
                                 autocomplete="off">
+                            @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -62,11 +68,14 @@ Edit Product
 
 
             <div class="form-group row mb-5">
-                <label class="col-form-label col-12 col-md-3 col-lg-3">Product Description</label>
+                <label class="col-form-label col-12 col-md-3 col-lg-3">{{ __('Product Description') }}</label>
                 <div class="col-sm-12 col-md-9">
-                    <textarea class="summernote" name="description">
+                    <textarea class="summernote @error('description') is-invalid @enderror" name="description">
                     {{ $product->description }}
                     </textarea>
+                    @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
@@ -74,44 +83,75 @@ Edit Product
                 <div class="col-md-4">
                     <div class="form-check form-switch mt-4">
                         <input type="hidden" name="status" value="0">
-                        <input type="checkbox" name="status" class="form-check-input" id="status" value="1" {{ $product->status ? 'checked' : '' }}>
+                        <input type="checkbox" name="status" class="form-check-input @error('status') is-invalid @enderror" id="status" value="1" {{ $product->status ? 'checked' : '' }}>
                         <label class="form-check-label" for="status">{{ __('Status') }}</label>
-
+                        @error('status')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-check form-switch mt-4">
                         <input type="hidden" name="featured" value="0">
-                        <input type="checkbox" name="featured" class="form-check-input" id="featured" value="1" {{ $product->featured ? 'checked' : '' }}>
+                        <input type="checkbox" name="featured" class="form-check-input @error('featured') is-invalid @enderror" id="featured" value="1" {{ $product->featured ? 'checked' : '' }}>
                         <label class="form-check-label" for="featured">{{ __('Featured') }}</label>
-
+                        @error('featured')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
+
+                <!-- product type -->
+                <div class="col-md-4">
+                    <div class="form-check form-switch mt-4">
+                        <label for="type" class="form-label">{{ __('Product Type') }}</label>
+                        <select name="type" id="type" class="form-control @error('type') is-invalid @enderror">
+                            <option value="normal" {{ $product->type == 'normal' ? 'selected' : '' }}>{{ __('Normal') }}</option>
+                            <option value="best_seller" {{ $product->type == 'best_seller' ? 'selected' : '' }}>{{ __('Best Seller') }}</option>
+                            <option value="new_arrival" {{ $product->type == 'new_arrival' ? 'selected' : '' }}>{{ __('New Arrival') }}</option>
+                            <option value="popular" {{ $product->type == 'popular' ? 'selected' : '' }}>{{ __('Popular') }}</option>
+                            <option value="top_rated" {{ $product->type == 'top_rated' ? 'selected' : '' }}>{{ __('Top Rated') }}</option>
+                        </select>
+                        @error('type')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
             </div>
 
             <div class="form-group row mb-3">
                 <!-- stock -->
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="stock" class="form-label">Stock</label>
-                        <input type="number" name="stock" class="form-control" id="stock" value="{{ $product->stock }}">
+                        <label for="stock" class="form-label">{{ __('Stock') }}</label>
+                        <input type="number" name="stock" class="form-control @error('stock') is-invalid @enderror" id="stock" value="{{ $product->stock }}">
+                        @error('stock')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
                 <!-- price -->
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="price" class="form-label">Price</label>
-                        <input type="number" name="price" class="form-control" id="price" value="{{ $product->price }}">
+                        <label for="price" class="form-label">{{ __('Price') }}</label>
+                        <input type="number" name="price" class="form-control @error('price') is-invalid @enderror" id="price" value="{{ $product->price }}">
+                        @error('price')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
                 <!-- old_price -->
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="old_price" class="form-label">Old Price</label>
-                        <input type="number" name="old_price" class="form-control" id="old_price" value="{{ $product->old_price }}">
+                        <label for="old_price" class="form-label">{{ __('Old Price') }}</label>
+                        <input type="number" name="old_price" class="form-control @error('old_price') is-invalid @enderror" id="old_price" value="{{ $product->old_price }}">
+                        @error('old_price')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -119,8 +159,11 @@ Edit Product
 
             <div class="row mb-2">
                 <div class="form-group">
-                    <label for="main_image" class="form-label"> {{ __('Main Image') }}<span class="text-danger">*</span></label>
+                    <label for="main_image" class="form-label">{{ __('Main Image') }}<span class="text-danger">*</span></label>
                     <input class="form-control" name="image" id="main_image" type="file" accept="image/*">
+                    @error('image')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                     <div id="main_image_preview" class="mt-2">
                         @if($product->getFirstMediaUrl('products'))
                         <img src="{{ $product->getFirstMediaUrl('products') }}" alt="Current Main Image" style="max-height: 150px;">
@@ -134,6 +177,9 @@ Edit Product
                     <label for="images" class="form-label">{{ __('Images') }}<span class="text-danger">*</span></label>
                     <input class="form-control" name="gallery[]" id="images" type="file" accept="image/*"
                         multiple="multiple">
+                    @error('gallery')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                     <div id="images_preview" class="mt-2 d-flex flex-wrap gap-2">
                         @foreach($product->getMedia('products_gallery') as $media)
                         <img src="{{ $media->getUrl() }}" alt="Gallery Image" style="max-height: 100px; border-radius: 5px;">
